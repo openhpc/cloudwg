@@ -1,0 +1,2 @@
+eu-west-1: ami-0ada4ff0364c46f55
+us-east-1: ami-06f3be803901d8db5
