@@ -99,26 +99,12 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
-  NATElasticIP:
-    DependsOn: AttachGateway
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-
-  ClusterNATGateway:
-    DependsOn: ExternalRouteTable
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt NATElasticIP.AllocationId
-      SubnetId: !Ref ClusterPublicSubnet
-
-  ClusterNATRoute:
+  ClusterEC2NATRoute:
     Type: AWS::EC2::Route
-    DependsOn: ClusterNATGateway
     Properties:
       RouteTableId: !Ref ClusterRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref ClusterNATGateway
+      InstanceId: !Ref SlurmManagementEC2
 
   ExternalAccessSG:
     Type: AWS::EC2::SecurityGroup
@@ -209,6 +195,7 @@ Resources:
       KeyName: !Ref KeyName
       SubnetId: !Ref ClusterPublicSubnet
       SecurityGroupIds: [ !Ref ClusterSG , !Ref ExternalAccessSG ]
+      SourceDestCheck: False
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:

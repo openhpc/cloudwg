@@ -9,9 +9,7 @@ Networking components are (in order of appearance in the template):
  - Route table for internal cluster traffic
  - Route table for external (internet) traffic
  - Route added to the external route table, directing traffic via the IGW
- - Elastic IP address for a NAT Gateway
- - NAT Gateway (to forward traffic from the "private" subnet to the internet)
- - NAT route (adding a route table rule to allow out-bound traffic via the NAT GW)
+ - NAT route (adding a route table rule to allow out-bound traffic via the controller instance)
  - External access security group (allowing SSH access from any IP)
  - "Public" subnet (192.168.0.0/24) in the first AZ of the region
  - Association between the public subnet and the external traffic route table
@@ -20,7 +18,7 @@ Networking components are (in order of appearance in the template):
  - Internal security group (to allow all traffic between resources in that SG)
  - Rule for the internal SG, opening access for all traffic
 
-(These are identical to the network.yml template found in ../network)
+(These are mostly identical to the network.yml template found in ../network, however the dedicated NAT gateway has been replaced by the controller instance, which now provides NAT functionality instead)
 
 The template adds Parameters, allowing for user input of the following values:
  - True/False selection of whether a login node should be provisioned as well as a controller
