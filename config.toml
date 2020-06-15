@@ -1,0 +1,7 @@
+baseURL = "http://utdsimmons.github.io/"
+languageCode = "en-us"
+title = "OHPC PEARC 2020 Tutorial"
+theme = "learn"
+
+[params]
+themeVariant = "blue"
