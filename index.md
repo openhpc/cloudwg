@@ -4,7 +4,7 @@ layout: default
 nav_order: 0
 ---
 
-#### Welcome to the OpenHPC tutorials page
+#### Welcome to the OpenHPC tutorials area
 
 <br/>
 This site houses pointers and documentation for various tutorials that
