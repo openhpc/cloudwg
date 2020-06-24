@@ -12,7 +12,7 @@ has_toc: false
 ##### Tutorial Length: 3 hours
 ##### Instructors:
 * Christopher S. Simmons
-* Karl Schulz
+* Karl W. Schulz
 * Derek Simmel
 
 ##### Target Audience: HPC cluster operators and users, computational science application developers with an interest in portable HPC software tools and environments including containers, VMs and Cloud Deployments.

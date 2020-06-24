@@ -1,7 +1,7 @@
 #theme: jekyll-theme-leap-day  # not bad
 #theme: jekyll-theme-dinky     # not bad
 #theme: jekyll-theme-minimal   # not bad
-theme: just-the-docs
+#theme: just-the-docs
 remote_theme: pmarsceill/just-the-docs
 
 
