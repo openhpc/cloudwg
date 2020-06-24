@@ -5,7 +5,7 @@ has_children: true
 has_toc: false
 ---
 
-## OHPC PEARC 2020 Tutorial
+## PEARC 2020 Tutorial
 ---
 #### Customizing OpenHPC: Integrating Additional Software and Provisioning New Services including Open OnDemand
 ##### Tutorial Level: Intermediate
