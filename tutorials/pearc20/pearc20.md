@@ -11,9 +11,11 @@ has_toc: false
 ##### Tutorial Level: Intermediate
 ##### Tutorial Length: 3 hours
 ##### Instructors:
+
 * Christopher S. Simmons
 * Karl W. Schulz
 * Derek Simmel
+{: .fs-3 }
 
 ##### Target Audience: HPC cluster operators and users, computational science application developers with an interest in portable HPC software tools and environments including containers, VMs and Cloud Deployments.
 
