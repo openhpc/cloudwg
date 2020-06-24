@@ -1,0 +1,22 @@
+#theme: jekyll-theme-leap-day  # not bad
+#theme: jekyll-theme-dinky   # not bad
+#theme: jekyll-theme-minimal  # not bad
+
+#theme: jekyll-theme-cayman
+#theme: jekyll-theme-midnight
+theme: just-the-docs
+#theme:  jekyll-docs-theme
+
+title: OpenHPC 
+#description: [A Description]
+show_downloads: false
+markdown: kramdown
+
+logo: "images/ohpc_logo.png"
+
+aux_links:
+  "OpenHPC on GitHub":
+    - "//github.com/openhpc/ohpc"
+aux_links_new_tab: true
+
+footer_content: "Copyright &copy 2020, OpenHPC, a Linux Foundation Collaborative Project. Documentation is availabile under the <a href=\"http://creativecommons.org/licenses/by/4.0\">Creative Commons Attribution 4.0</a> license."
