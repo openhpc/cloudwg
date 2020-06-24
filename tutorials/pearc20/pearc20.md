@@ -6,6 +6,11 @@ has_toc: false
 ---
 
 ## PEARC 2020 Tutorial
+
+<span style="color: red">*Note: this tutorial is work in progress in preparation
+for the PEARC conference in July 2020.*</span>
+{: .fs-2}
+
 ---
 #### Customizing OpenHPC: Integrating Additional Software and Provisioning New Services including Open OnDemand
 ##### Tutorial Level: Intermediate
