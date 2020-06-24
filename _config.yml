@@ -1,11 +1,9 @@
 #theme: jekyll-theme-leap-day  # not bad
-#theme: jekyll-theme-dinky   # not bad
-#theme: jekyll-theme-minimal  # not bad
-
-#theme: jekyll-theme-cayman
-#theme: jekyll-theme-midnight
+#theme: jekyll-theme-dinky     # not bad
+#theme: jekyll-theme-minimal   # not bad
 theme: just-the-docs
-#theme:  jekyll-docs-theme
+remote_theme: pmarsceill/just-the-docs
+
 
 title: OpenHPC 
 #description: [A Description]
