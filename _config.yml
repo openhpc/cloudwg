@@ -1,12 +1,6 @@
-#theme: jekyll-theme-leap-day  # not bad
-#theme: jekyll-theme-dinky     # not bad
-#theme: jekyll-theme-minimal   # not bad
-theme: just-the-docs
 remote_theme: pmarsceill/just-the-docs
 
-
 title: OpenHPC 
-#description: [A Description]
 show_downloads: false
 markdown: kramdown
 
