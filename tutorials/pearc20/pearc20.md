@@ -3,6 +3,7 @@ title: PEARC 2020 Tutorial
 layout: default
 has_children: true
 has_toc: false
+nav_order: 300
 ---
 
 ## PEARC 2020 Tutorial

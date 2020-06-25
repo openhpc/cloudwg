@@ -1,6 +1,7 @@
 ---
 title: PEARC 2017 Tutorial
 layout: default
+nav_order: 500
 ---
 
 ## PEARC 2017 Tutorial
