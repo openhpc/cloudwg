@@ -22,4 +22,4 @@ of the project, packaging conventions and development environment, while the
 remaining slides were used to support the hands-on installation of bare-metal
 clusters by on-site participants.
 
-![pearc17](images/PEARC17.png){:width="700px"}
+[![pearc17](images/PEARC17.png){: width="700px"}](https://docs.google.com/presentation/d/1u56y7p-kFw9UwvEWb_gg0BBMxooUOTb85kGR8PaDf64)
