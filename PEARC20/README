@@ -1,0 +1,43 @@
+tutorial-system/
+
+This is the yaml and scripts to build the full system with all capabilities needed to run workloads during the actual tutorial.
+This cluster will be hosted in the OpenHPC organizational AWS account.
+~40 user accounts should be set up in advance.
+
+The ML workloads will be done with tensorflow containers on CPUs. GPUs get expensive quickly.
+
+- Cluster to SSH into for tutorial on OHPC AWS Org account
+- controller
+- login + OOD
+- compute + OOD + tensorflow CPU container
+
+event-engine/
+
+This is the yaml and scripts to build the event engine based systems for attendees to use after the tutorial for up to 2 weeks.
+User comes to our slack and asks for a hash. Hash entered into event engine website and user is popped into a cloud9 IDE.
+In user directory are all the yaml files to build a tutorial complete system with packer installed as well.
+
+- Cluster for EventEngine
+- pops you into cloud9 + files locally for following along
+- you build AMIs with packer + run CF templates
+- controller + login + OOD
+- compute + OOD + provide a tensorflow CPU container
+- user can then use OOD or CLI to run workloads from tutorial
+
+exercises/
+
+These are the systems that we will build and augment throughout the tutorial.
+
+Cluster steps for tutorial:
+
+Exercise 1
+- controller + login
+- compute
+
+Exercise 3
+- extend controller + login with OOD
+- extend compute + OOD
+
+Exercise 4
+- new compute node with GPU for TF
+
