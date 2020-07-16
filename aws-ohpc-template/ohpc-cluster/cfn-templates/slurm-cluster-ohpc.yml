@@ -31,11 +31,10 @@ Parameters:
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
-    Default: m5.2xlarge
+    Default: t3.micro
     AllowedValues:
-      - c5.2xlarge
-      - m5.2xlarge
-      - r5.2xlarge
+      - t3.micro
+      - t3.2xlarge
 
   LoginAMI:
     Description: AMI to use for login node.
@@ -45,11 +44,10 @@ Parameters:
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
-    Default: m5.2xlarge
+    Default: t3.micro
     AllowedValues:
-      - c5.2xlarge
-      - m5.2xlarge
-      - r5.2xlarge
+      - t3.micro
+      - t3.2xlarge
 
   ComputeAMI:
     Description: AMI to use for compute nodes.
