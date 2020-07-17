@@ -188,15 +188,6 @@ Resources:
               - 'sts:AssumeRole'
       Path: /
       Policies:
-      - PolicyName: SlurmS3
-        PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 's3:GetObject'
-                  - 's3:ListBucket'
-                Resource: '*'
       - PolicyName: SlurmEC2
         PolicyDocument:
             Version: 2012-10-17
@@ -204,14 +195,6 @@ Resources:
               - Effect: Allow
                 Action:
                   - 'ec2:*'
-                Resource: '*'
-      - PolicyName: SlurmIAM
-        PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'iam:*'
                 Resource: '*'
 
   SlurmHeadProfile:
@@ -221,37 +204,6 @@ Resources:
       Path: /
       Roles:
         - !Ref SlurmHeadRole
-
-  SlurmComputeRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-            - Effect: Allow
-              Principal:
-                Service:
-                - 'ec2.amazonaws.com'
-              Action:
-              - 'sts:AssumeRole'
-      Path: /
-      Policies:
-      - PolicyName: SlurmEC2
-        PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'ec2:DescribeTags'
-                Resource: '*'
-
-  SlurmComputeProfile:
-    DependsOn: SlurmComputeRole
-    Type: 'AWS::IAM::InstanceProfile'
-    Properties:
-      Path: /
-      Roles:
-        - !Ref SlurmComputeRole
 
   SlurmS3Endpoint:
     Type: AWS::EC2::VPCEndpoint
@@ -285,6 +237,7 @@ Resources:
       SubnetId: !Ref ClusterPublicSubnet
       PrivateIpAddress: 192.168.0.100
       SecurityGroupIds: [ !Ref ClusterSG , !Ref ExternalAccessSG ]
+      SourceDestCheck: false
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
@@ -298,11 +251,9 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|enforcing|disabled|g" /etc/selinux/config
-          setenforce 0
           echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/ip_forward.conf
           sysctl -w net.ipv4.ip_forward=1
-          dnf -y install iptables-services
+          yum -y install iptables-services
           iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/16 -j MASQUERADE
           service iptables save
           systemctl start iptables
@@ -338,8 +289,7 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|enforcing|disabled|g" /etc/selinux/config
-          setenforce 0
+          sleep 30
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
@@ -368,9 +318,8 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|enforcing|disabled|g" /etc/selinux/config
-          setenforce 0
-          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
+          sleep 30
+          #echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
           echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
@@ -401,8 +350,8 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|enforcing|disabled|g" /etc/selinux/config
-          setenforce 0
+          sleep 30
+          dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
