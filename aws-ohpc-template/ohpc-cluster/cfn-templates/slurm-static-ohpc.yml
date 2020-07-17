@@ -251,9 +251,11 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
           echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/ip_forward.conf
           sysctl -w net.ipv4.ip_forward=1
-          yum -y install iptables-services
+          dnf -y install iptables-services
           iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/16 -j MASQUERADE
           service iptables save
           systemctl start iptables
@@ -289,10 +291,15 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sleep 30
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
+          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
+          systemctl restart slurmd
+          systemctl enable slurmd
 
   SlurmCompute01:
     DependsOn: SlurmManagement
@@ -318,8 +325,10 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sleep 30
-          #echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
+          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
           echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
@@ -350,10 +359,12 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sleep 30
-          dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
+          touch /home/hello-from-compute02
           mount -a
           echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
           systemctl restart slurmd
