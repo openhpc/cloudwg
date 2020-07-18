@@ -281,6 +281,8 @@ Resources:
           systemctl start slurmctld
           systemctl enable slurmctld
           cp /etc/slurm/slurm.conf /home/.slurmconf
+          touch /etc/slurm/power_save.log
+          chown slurm:slurm /etc/slurm/power_save.log
 
   SlurmLogin:
     Condition: LoginEnabled
