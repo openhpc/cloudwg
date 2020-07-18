@@ -5,7 +5,7 @@ Parameters:
 
   AllocateLoginNode:
     Description: Specify whether to create a login node
-    Default: FALSE
+    Default: TRUE
     Type: String
     AllowedValues:
       - TRUE
@@ -265,6 +265,12 @@ Resources:
           exportfs -a
           systemctl restart nfs-server
           systemctl enable nfs-server
+          curl https://gist.githubusercontent.com/ChrisDowning/9bd05231f6153d8b720cbda47e68cda2/raw/e91061ee76bcf2a540e53699b34fa2a885f4f423/slurm.conf > /etc/slurm/slurm.conf
+          systemctl start munge
+          systemctl enable munge
+          cp /etc/munge/munge.key /home/.munge
+          systemctl start slurmctld
+          systemctl enable slurmctld
 
   SlurmLogin:
     Condition: LoginEnabled
@@ -297,9 +303,11 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
-          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
-          systemctl restart slurmd
-          systemctl enable slurmd
+          curl https://gist.githubusercontent.com/ChrisDowning/9bd05231f6153d8b720cbda47e68cda2/raw/e91061ee76bcf2a540e53699b34fa2a885f4f423/slurm.conf > /etc/slurm/slurm.conf
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
 
   SlurmCompute01:
     DependsOn: SlurmManagement
@@ -331,8 +339,12 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
           echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
-          systemctl restart slurmd
+          systemctl start slurmd
           systemctl enable slurmd
 
   SlurmCompute02:
@@ -364,8 +376,11 @@ Resources:
           sleep 180
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
-          touch /home/hello-from-compute02
           mount -a
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
           echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
           systemctl restart slurmd
           systemctl enable slurmd
