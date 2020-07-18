@@ -1,7 +1,6 @@
 #!/bin/bash
 
-export SLURM_ROOT=/cluster/slurm
-export SLURM_CONF=$SLURM_ROOT/etc/slurm.conf
+export SLURM_ROOT=/etc/slurm
 export CLUSTER_REGION=$(curl -sS http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 export SLURM_POWER_LOG=$SLURM_ROOT/power_save.log
 
@@ -22,9 +21,7 @@ function aws_shutdown()
 echo "`date` Suspend invoked $0 $*" >> $SLURM_POWER_LOG
 hosts=$($SLURM_ROOT/bin/scontrol show hostnames $1)
 num_hosts=$(echo "$hosts" | wc -l)
-for host in $hosts
+for hostname in $hosts
 do
-   aws_shutdown $host
-   $SLURM_ROOT/bin/scontrol reconfigure
-   sleep 1
+   aws_shutdown $hostname
 done
