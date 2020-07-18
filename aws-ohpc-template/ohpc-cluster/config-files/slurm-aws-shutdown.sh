@@ -3,6 +3,7 @@
 export SLURM_ROOT=/etc/slurm
 export CLUSTER_REGION=$(curl -sS http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 export SLURM_POWER_LOG=$SLURM_ROOT/power_save.log
+export PATH=$PATH:/usr/local/bin:/usr/bin
 
 function aws_shutdown()
 {
@@ -19,7 +20,7 @@ function aws_shutdown()
 }
 
 echo "`date` Suspend invoked $0 $*" >> $SLURM_POWER_LOG
-hosts=$(/bin/scontrol show hostnames $1)
+hosts=$(scontrol show hostnames $1)
 num_hosts=$(echo "$hosts" | wc -l)
 for hostname in $hosts
 do

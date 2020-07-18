@@ -10,6 +10,7 @@ export AWS_AMI=@COMPUTEAMI@
 export AWS_KEYNAME=@KEYNAME@
 export SLURM_ROOT=/etc/slurm
 export SLURM_POWER_LOG=$SLURM_ROOT/power_save.log
+export PATH=$PATH:/usr/local/bin:/usr/bin
 
 function start_node()
 {
@@ -47,12 +48,12 @@ function nametoip()
 }
 
 echo "`date` Resume invoked $0 $*" >> $SLURM_POWER_LOG
-hosts=$(/usr/bin/scontrol show hostnames $1)
+hosts=$(scontrol show hostnames $1)
 num_hosts=$(echo "$hosts" | wc -l)
 for hostname in $hosts
 do
   private_ip=$(nametoip $hostname)
   start_node $hostname $private_ip
-  /usr/bin/scontrol update nodename=$hostname nodehostname=$hostname nodeaddr=$private_ip
+  scontrol update nodename=$hostname nodehostname=$hostname nodeaddr=$private_ip
   rm $NODE_JSON
 done

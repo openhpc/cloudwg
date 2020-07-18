@@ -273,6 +273,8 @@ Resources:
           sed -i "s|@SUBNETID@|${ClusterComputeSubnet}|g" /etc/slurm/slurm-aws-startup.sh
           sed -i "s|@COMPUTEAMI@|${ComputeAMI}|g" /etc/slurm/slurm-aws-startup.sh
           sed -i "s|@KEYNAME@|${KeyName}|g" /etc/slurm/slurm-aws-startup.sh
+          chmod +x /etc/slurm/slurm-aws-startup.sh
+          chmod +x /etc/slurm/slurm-aws-shutdown.sh
           systemctl start munge
           systemctl enable munge
           cp /etc/munge/munge.key /home/.munge
