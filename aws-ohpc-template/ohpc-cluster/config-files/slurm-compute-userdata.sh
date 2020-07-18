@@ -10,6 +10,7 @@ cp /home/.munge /etc/munge/munge.key
 chown munge:munge /etc/munge/munge.key
 systemctl start munge
 systemctl enable munge
+cp /home/.slurmconf /etc/slurm/slurm.conf
 echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
 systemctl restart slurmd
 systemctl enable slurmd
