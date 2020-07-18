@@ -265,8 +265,8 @@ Resources:
           exportfs -a
           systemctl restart nfs-server
           systemctl enable nfs-server
-          curl https://gist.githubusercontent.com/ChrisDowning/03289662b40ee102bcab64831c6a5ec9/raw/44077303f8563a5f630164d4faec9723e7a145b5/slurm.conf > /etc/slurm/slurm.conf
-          curl https://gist.githubusercontent.com/ChrisDowning/43226d1d4e25d02a721d7725965f6cb7/raw/8a783237e0907338b25677907fb67f3205352ef7/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
+          curl https://gist.githubusercontent.com/ChrisDowning/03289662b40ee102bcab64831c6a5ec9/raw/125df20fc42c783ca3c0f78a9226e3dc8b95f7bb/slurm.conf > /etc/slurm/slurm.conf
+          curl https://gist.githubusercontent.com/ChrisDowning/43226d1d4e25d02a721d7725965f6cb7/raw/8aa7d4a1148ddfa449373caef7a9f93a787f71a9/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
           curl https://gist.githubusercontent.com/ChrisDowning/0afbcd4c1a5aca992cedd7ccaaf568f0/raw/f114587c5526ecabeb4efd640b9b18efe7f3302e/slurm-aws-shutdown.sh > /etc/slurm/slurm-aws-shutdown.sh
           curl https://gist.githubusercontent.com/ChrisDowning/19e2fd13e905e3af84bedc61aebe5629/raw/6e66d56024f58888911f56b698f57e396b2b5bc6/slurm-compute-userdata.sh > /etc/slurm/slurm-compute-userdata.sh
           sed -i "s|@COMPUTESG@|${ClusterSG}|g" /etc/slurm/slurm-aws-startup.sh
@@ -278,6 +278,7 @@ Resources:
           cp /etc/munge/munge.key /home/.munge
           systemctl start slurmctld
           systemctl enable slurmctld
+          cp /etc/slurm/slurm.conf /home/.slurmconf
 
   SlurmLogin:
     Condition: LoginEnabled
@@ -310,7 +311,7 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
-          curl https://gist.githubusercontent.com/ChrisDowning/03289662b40ee102bcab64831c6a5ec9/raw/44077303f8563a5f630164d4faec9723e7a145b5/slurm.conf > /etc/slurm/slurm.conf
+          cp /home/.slurmconf /etc/slurm/slurm.conf
           cp /home/.munge /etc/munge/munge.key
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
