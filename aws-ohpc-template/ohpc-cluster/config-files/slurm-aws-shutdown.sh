@@ -19,7 +19,7 @@ function aws_shutdown()
 }
 
 echo "`date` Suspend invoked $0 $*" >> $SLURM_POWER_LOG
-hosts=$($SLURM_ROOT/bin/scontrol show hostnames $1)
+hosts=$(/bin/scontrol show hostnames $1)
 num_hosts=$(echo "$hosts" | wc -l)
 for hostname in $hosts
 do

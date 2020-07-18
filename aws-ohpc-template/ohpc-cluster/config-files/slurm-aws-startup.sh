@@ -3,13 +3,11 @@
 export SLURM_HEADNODE_IPADDR=$(curl -sS http://169.254.169.254/latest/meta-data/local-ipv4)
 export SLURM_HEADNODE_AWS_REGION=$(curl -sS http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 export COMPUTE_SG=@COMPUTESG@
-export COMPUTE_PROFILE=@PROFILE@
 export COMPUTE_SUBNET_ID=@SUBNETID@
 export AWS_DEFAULT_MAC=$(curl -sS http://169.254.169.254/latest/meta-data/mac)
 export AWS_SECURITY=$(curl -sS http://169.254.169.254/latest/meta-data/network/interfaces/macs/$AWS_DEFAULT_MAC/security-group-ids)
 export AWS_AMI=@BASEAMI@
 export AWS_KEYNAME=@KEYNAME@
-export S3BUCKET=@S3BUCKET@
 export SLURM_ROOT=/etc/slurm
 export SLURM_POWER_LOG=$SLURM_ROOT/power_save.log
 
@@ -24,7 +22,7 @@ function start_node()
                           --subnet-id "$COMPUTE_SUBNET_ID" \
                           --private-ip-address $2 \
                           --iam-instance-profile Name=$COMPUTE_PROFILE \
-                          --user-data file://$SLURM_ROOT/bin/slurm-compute-userdata.sh \
+                          --user-data file://$SLURM_ROOT/slurm-compute-userdata.sh \
                           --region $SLURM_HEADNODE_AWS_REGION \
                           --block-device-mappings \
                             '[
@@ -49,12 +47,12 @@ function nametoip()
 }
 
 echo "`date` Resume invoked $0 $*" >> $SLURM_POWER_LOG
-hosts=$($SLURM_ROOT/bin/scontrol show hostnames $1)
+hosts=$(/usr/bin/scontrol show hostnames $1)
 num_hosts=$(echo "$hosts" | wc -l)
 for hostname in $hosts
 do
   private_ip=$(nametoip $hostname)
   start_node $hostname $private_ip
-  $SLURM_ROOT/bin/scontrol update nodename=$hostname nodehostname=$hostname nodeaddr=$private_ip
+  /usr/bin/scontrol update nodename=$hostname nodehostname=$hostname nodeaddr=$private_ip
   rm $NODE_JSON
 done
