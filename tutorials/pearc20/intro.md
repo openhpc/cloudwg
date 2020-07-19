@@ -2,7 +2,7 @@
 title: Introduction
 layout: default
 parent: PEARC 2020 Tutorial
-nav_order: 1
+nav_order: 2
 ---
 
 ## Introduction
