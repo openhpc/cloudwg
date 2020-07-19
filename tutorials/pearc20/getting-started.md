@@ -8,16 +8,16 @@ nav_order: 0
 ## Getting Started
 
 This site and the resulting tutorial is designed to be experienced in 3 ways:
-* Standalone tutorial cluster run by the OpenHPC team on which you have a user account
-* EventEngine driven tutorial cluster on which you have you are provided a provisioned cluster and have full admin privledges
-* An AWS cluster you provision from scratch on your own AWS account following Exercises 1 and 3
+* [Standalone tutorial cluster](#standalone-tutorial-cluster) run by the OpenHPC team on which you have a user account
+* [EventEngine tutorial cluster](#eventengine-tutorial-cluster) on which you have you are provided a provisioned cluster and have full admin privledges
+* [Personal AWS cluster](#personal-aws-cluster-from-scratch) you provision from scratch on your own AWS account following [Exercise 1](exercise1.html) and [Exercise 3](exercise3.html)
 
 ### Standalone Tutorial Cluster
 
 As part of PEARC 2020, the OpenHPC cloud working group has provisioned an OpenHPC cluster at AWS. 
 This cluster will be available from Monday, July 27th 2020 until Friday, August 7th.
 
-User accounts will be provided to tutorial attendees and they will be used for Exercises 2 and 5.
+User accounts will be provided to tutorial attendees and they will be used for [Exercise 2](exercise2.html) and [Exercise 5](exercise5.html).
 
 
 ### EventEngine Tutorial Cluster
@@ -35,7 +35,7 @@ Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/lo
 Hash requests will be accepted after the tutorial until Friday, August 7th. 
 Once deployed, your EvenEngine cluster will be available for 48 hours.
 
-### AWS cluster from scratch
+### Personal AWS cluster from scratch
 
 The third way to experience this tutorial is to use your own AWS account and follow along with Exercises 1 and 3. 
 After finishing these two exercises, you will have your own system that can then be used to do Exercise 5.
