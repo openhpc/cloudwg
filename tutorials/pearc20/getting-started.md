@@ -22,8 +22,11 @@ User accounts will be provided to tutorial attendees and they will be used for [
 
 ### EventEngine Tutorial Cluster
 
-Also as part of PEARC 2020, [EventEngine](https://dashboard.eventengine.run/login) hashes will be available upon request.
-In order to request a hash, join the [OpenHPC Slack](http://openhpc.community/support/slack/) and request a hash in the PEARC2020 channel.
+Also as part of PEARC 2020,
+[EventEngine](https://dashboard.eventengine.run/login) hashes will be available
+upon request.  In order to request a hash, join the [OpenHPC
+Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMjc5MmJlMjJlY2ExNzYyYzcyN2M3OTkyMTcwOWI4YzlkMmEyMzIzODZhYzIxYzIwZDE2NWEyNmMzNzVhMTY)
+and request a hash in the PEARC2020 channel.
 
 Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login), enter the hash and in a few minutes you will be provided with:
 * A terminal in a web browser which is running Cloud9, a Cloud IDE
