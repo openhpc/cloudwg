@@ -41,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-055ed385d71ef7a15
+    Default: ami-0872ca01701bdf073
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -54,7 +54,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0ffe55184ebf9b485
+    Default: ami-0872ca01701bdf073
     
 Conditions:
 
@@ -308,11 +308,11 @@ Resources:
           chown slurm:slurm /etc/slurm/power_save.log
           # really should trigger off of TrainingEnabled
           for i in `seq -w 0 30`; do useradd -m "train$i";done
-	  # setup LosF config
+          # setup LosF config
           useradd -m losf
           echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
           pushd /home/losf; git clone https://github.com/koomie/ec2-losf.git; popd
-	  update -q
+          update -q
 
   SlurmLogin:
     Condition: LoginEnabled
@@ -352,11 +352,10 @@ Resources:
           systemctl enable munge
           # really should trigger off of TrainingEnabled
           for i in `seq -w 0 30`; do useradd -m "train$i";done
-	  # setup LosF config
+          # setup LosF config
           useradd -m losf
           echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
-          pushd /home/losf; git clone https://github.com/koomie/ec2-losf.git; popd
-	  update -q
+          update -q
 
 Outputs:
   SlurmManagementPublicIP:
