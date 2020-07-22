@@ -11,16 +11,24 @@ Parameters:
       - TRUE
       - FALSE
 
+  EnableTrainingAccounts
+    Description: Specify whether to create a set of temporary training accounts
+    Default: TRUE
+    Type: String
+    AllowedValues:
+      - TRUE
+      - FALSE
+
   KeyName:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
-    Default: HP-Ubuntu
+    Default: koomie-home
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-00aa2fe5297675269
+    Default: ami-0c5dd38aa219063c4
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-00000028806222243
+    Default: ami-0ffe55184ebf9b485
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,12 +54,15 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-00000028806222243
+    Default: ami-0ffe55184ebf9b485
     
 Conditions:
 
   LoginEnabled:
     !Equals [ !Ref AllocateLoginNode, TRUE ]
+
+  TrainingEnabled:
+    !Equals [ !Ref EnableTrainingAccounts, TRUE ]
 
 Resources:
 
@@ -332,6 +343,8 @@ Resources:
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
+	  # really should trigger off of TrainingEnabled
+	  for i in `seq -w 0 30`; do useradd -m "train$i";done
 
 Outputs:
   SlurmManagementPublicIP:
