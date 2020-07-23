@@ -41,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0872ca01701bdf073
+    Default: ami-06e43ffcc35468ed2
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -54,7 +54,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0872ca01701bdf073
+    Default: ami-06e43ffcc35468ed2
     
 Conditions:
 
@@ -350,8 +350,6 @@ Resources:
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
-          # really should trigger off of TrainingEnabled
-          for i in `seq -w 0 30`; do useradd -m "train$i";done
           # setup LosF config
           useradd -m losf
           echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
