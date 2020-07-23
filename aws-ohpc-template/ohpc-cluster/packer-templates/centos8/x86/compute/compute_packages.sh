@@ -16,3 +16,6 @@ dnf -y install perl-Sys-Syslog
 dnf -y install perl-Log-Log4perl
 dnf -y install perl-Config-IniFiles
 dnf -y install perl-Env
+
+# training accounts
+for i in `seq -w 0 30`; do useradd "train$i";done
