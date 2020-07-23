@@ -19,3 +19,9 @@ dnf -y install perl-Env
 
 # training accounts
 for i in `seq -w 0 30`; do useradd "train$i";done
+
+# make sure we use configless SLURM
+mv /etc/slurm/slurm.conf /etc/slurm/slurm.conf.orig
+
+# let's allow compilation on back end
+dnf -y install glibc-devel
