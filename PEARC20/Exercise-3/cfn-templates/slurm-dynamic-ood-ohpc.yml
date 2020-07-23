@@ -33,10 +33,10 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-000e7ce4dd68e7a11
+    Default: ami-0476b7e0bdc5979eb
 
   LoginInstanceType:
-    Description: Instance type to be used for Slurm Login Node.
+    Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
     Default: t3.2xlarge
     AllowedValues:
@@ -113,13 +113,25 @@ Resources:
       GroupDescription: Allow SSH Access to Instance
       VpcId: !Ref ClusterVPC
       SecurityGroupIngress:
-        IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
-        CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
-          Value: SSHAccessSecurityGroup
+          Value: ExternalAccessSecurityGroup
 
   ClusterPublicSubnet:
     Type: AWS::EC2::Subnet
@@ -299,7 +311,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: 500
+            VolumeSize: 340
             DeleteOnTermination: true
             VolumeType: gp2
       Tags:
@@ -320,8 +332,6 @@ Resources:
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
-          systemctl start x2gocleansessions
-          systemctl enable x2gocleansessions
 
 Outputs:
   SlurmManagementPublicIP:
