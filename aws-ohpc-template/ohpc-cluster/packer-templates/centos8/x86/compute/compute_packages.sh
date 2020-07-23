@@ -8,10 +8,7 @@ dnf -y install ohpc-base-compute
 dnf -y install ohpc-release
 dnf -y install ohpc-slurm-client
 dnf -y install wget curl python3-pip jq git make nfs-utils libnfs
-
 dnf -y install lmod-ohpc
-dnf -y install lmod-defaults-gnu9-openmpi4-ohpc
-dnf -y install wget curl python3-pip git make finger
 
 # losf and deps
 dnf -y install losf-ohpc
