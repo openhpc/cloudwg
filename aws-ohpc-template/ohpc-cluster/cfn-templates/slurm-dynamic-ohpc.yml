@@ -41,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0bdd8b7024f224f19
+    Default: ami-0b7040fd8858c0450
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -54,7 +54,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0bdd8b7024f224f19
+    Default: ami-0b7040fd8858c0450
     
 Conditions:
 
@@ -345,11 +345,11 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
-          cp /home/.slurmconf /etc/slurm/slurm.conf
           cp /home/.munge /etc/munge/munge.key
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
+          systemctl start slurmd
           # setup LosF config
           useradd -m losf
           echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
