@@ -9,8 +9,8 @@ nav_order: 0
 
 This site and the resulting tutorial is designed to be experienced in 3 ways:
 * [Standalone tutorial cluster](#standalone-tutorial-cluster) run by the OpenHPC team on which you have a user account
-* [EventEngine tutorial cluster](#eventengine-tutorial-cluster) on which you have you are provided a provisioned cluster and have full admin privledges
-* [Personal AWS cluster](#personal-aws-cluster-from-scratch) you provision from scratch on your own AWS account following [Exercise 1](exercise1.html) and [Exercise 3](exercise3.html)
+* [EventEngine tutorial cluster](#eventengine-tutorial-cluster) on which you have you are provided an account and a cloud9 IDE terminal
+* [Personal AWS cluster](#personal-aws-cluster-from-scratch) you provision from scratch on your own AWS account 
 
 ### Standalone Tutorial Cluster
 
@@ -24,26 +24,70 @@ User accounts will be provided to tutorial attendees and they will be used for [
 
 Also as part of PEARC 2020,
 [EventEngine](https://dashboard.eventengine.run/login) hashes will be available
-upon request.  In order to request a hash, join the [OpenHPC
+upon request on July 27th and August 3rd via the OpenHPC Slack. 
+
+In order to request acess, join the [OpenHPC
 Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMjc5MmJlMjJlY2ExNzYyYzcyN2M3OTkyMTcwOWI4YzlkMmEyMzIzODZhYzIxYzIwZDE2NWEyNmMzNzVhMTY)
-and request a hash in the PEARC2020 channel.
+and request a hash in the #tutorials channel.
 
 Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login), enter the hash and in a few minutes you will be provided with:
 * A terminal in a web browser which is running Cloud9, a Cloud IDE
-* A slurm login/management node and two compute nodes, configured as persistent/static compute nodes
-* All files needed to customize the existing deployment, or deploy a new static or dynamic SLURM cluster
 * All files needed to follow the tutorial and remaining exercises
 
-
-Hash requests will be accepted after the tutorial until Friday, August 7th. 
-Once deployed, your EvenEngine cluster will be available for 48 hours.
+Systems deployed using EventEngine will be available for 48 hours after you receive the hash (not redeem).
 
 ### Personal AWS cluster from scratch
 
 The third way to experience this tutorial is to use your own AWS account and follow along with Exercises 1 and 3. 
 After finishing these two exercises, you will have your own system that can then be used to do Exercise 5.
 
-FIXME
+#### Create a new AWS account
 
-here is where I capture and document the steps to get a fresh account up to the point of cloud9 ide ready
-to start exercise 1
+* Go to https://aws.amazon.com/console/ -> create a free account
+* Set up a Basic Plan (Free)
+* You will have to enter CC information, but every exercise on this website uses free tier resources
+* Sign into AWS as the "Root user" with the account you just created
+* Services -> IAM -> Add user
+* Enter user name and select both the "Programmatic access" and the "AWS Management Console access" boxes.
+* Hit next to go to the Set permissions page and sleect the 3rd box from the top menu "Attach existing policies directly"
+* Check AdministratorAccess -> Next -> Create user
+* Capture the Access Key ID and the Secret access key for later use
+
+
+Sign out of AWS as the Root user and sign back in, this time using the IAM user account you just created.
+
+#### Create an EC2 Key Pair
+
+* Services -> EC2 -> Key Pairs
+* Create key pair 
+* name=pearc20; file format pem -> create key pair
+* Your web browser will now download pearc20.pem
+* Save the pearc20.pem private key; we will need it later
+
+#### Create and configure Cloud9 Instance
+
+* Services > Cloud9 > create environment
+* Accept the default environment settings -> create environment
+* Services > Cloud9 > Open IDE
+
+In the cloud9 terminal run:
+
+~~~
+
+$ aws configure
+
+~~~
+ 
+enter access key id and secret access key -> return -> return
+
+Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/)
+
+~~~
+
+$ mkdir ~/bin && cd ~/bin
+$ wget https://releases.hashicorp.com/packer/1.6.0/packer_1.6.0_linux_amd64.zip 
+$ unzip packer_1.6.0_linux_amd64.zip
+
+~~~
+
+You are now ready to start [Exercise 1](exercise1.html).
