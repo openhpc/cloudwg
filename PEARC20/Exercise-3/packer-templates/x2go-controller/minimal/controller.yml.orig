@@ -8,10 +8,10 @@
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
     "instance_type": "t3.micro",
-    "region": "us-east-2",
-    "source_ami": "ami-000e7ce4dd68e7a11",
+    "region": "OHPC_AWS_REGION",
+    "source_ami": "OHPC_CENTOS_AMI",
     "ssh_username": "centos",
-    "ami_name": "openhpc-controller-{{timestamp}}",
+    "ami_name": "openhpc-minimal-controller-{{timestamp}}",
     "launch_block_device_mappings": [
     {
       "device_name": "/dev/sda1",

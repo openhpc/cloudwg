@@ -6,6 +6,8 @@ source ../Exercise-1/00-env-setup.sh
 export OHPC_LOGIN_AMI=
 
 
+export OHPC_CONTROLLER_AMI=
+
 
 export OHPC_AWS_REGION=`aws configure get region`
 
