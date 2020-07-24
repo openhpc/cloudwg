@@ -15,12 +15,12 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
-    Default: gedanken
+    Default: pearc20
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0524af78e9d081f78
+    Default: OHPC_CONTROLLER_AMI
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +33,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0476b7e0bdc5979eb
+    Default: OHPC_LOGIN_AMI
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,7 +46,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-08588a2f134574dfa
+    Default: OHPC_COMPUTE_AMI
     
 Conditions:
 
@@ -321,17 +321,26 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          sed -i "s|SELINUX=enforcing|SELINUX=disabled|g" /etc/selinux/config
           setenforce 0
+          mkdir /etc/ood/config/clusters.d
           sleep 180
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
+          su - centos -c "ssh-keygen -q -t rsa -N '' <<< ""$'\n'"y" 2>&1 >/dev/null"
+          su - centos -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
           cp /home/.slurmconf /etc/slurm/slurm.conf
           cp /home/.munge /etc/munge/munge.key
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
+          htpasswd -b -c /etc/httpd/.htpasswd centos ood
+          systemctl enable httpd
+          curl https://gist.githubusercontent.com/utdsimmons/65f9abf1c01b652d92d047ca07f0ac97/raw/aecdd825ada81bdf19456f4e4129fee38941f5ba/pearc.yml > /etc/ood/config/clusters.d/pearc.yml
+          reboot
+
+
 
 Outputs:
   SlurmManagementPublicIP:
