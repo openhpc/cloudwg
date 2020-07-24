@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 dnf -y update
 dnf -y config-manager --set-enabled PowerTools
 dnf -y install epel-release
@@ -9,12 +8,15 @@ dnf -y install ohpc-base
 dnf -y install ohpc-release
 dnf -y install ohpc-slurm-server
 dnf -y install lmod-ohpc
+dnf -y docs-ohpc
+
 # dev packages
 dnf -y install ohpc-autotools
 dnf -y install EasyBuild-ohpc
 dnf -y install hwloc-ohpc
 dnf -y install spack-ohpc
 dnf -y install valgrind-ohpc
+
 # gnu9 serial/threaded packages
 dnf -y install ohpc-gnu9-serial-libs
 dnf -y install ohpc-gnu9-runtimes
@@ -26,6 +28,8 @@ dnf -y install ohpc-gnu9-mpich*
 dnf -y install ohpc-gnu9-openmpi4*
 dnf -y install lmod-defaults-gnu9-openmpi4-ohpc
 dnf -y install wget curl python3-pip jq git make nfs-utils
+# include optional mpich variant
+dnf -y install mpich-ucx-gnu9-ohpc
 
 # losf deps
 dnf -y install perl-Sys-Syslog
