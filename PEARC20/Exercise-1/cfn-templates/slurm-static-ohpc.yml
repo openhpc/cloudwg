@@ -20,7 +20,7 @@ Parameters:
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0c01381dc727e90dd
+    Default: ami-0c482f7e6215789a4
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +33,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0de50ea8048883e0d
+    Default: ami-09852430d9e74bcee
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,7 +46,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0de50ea8048883e0d
+    Default: ami-09852430d9e74bcee
     
 Conditions:
 
