@@ -37,8 +37,10 @@ At this stage, you will be presented with a clean, temporary AWS account into wh
 For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; you can follow the instructions below to get started. Key differences to note:
 
 * EventEngine accounts are temporary, but free - you will not need to enter any payment information.
-* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard (you can still create/upload your own keypair if you prefer).
 * Within an EventEngine account, you will *not* neet to create an IAM user; your login user will already have the required permissions.
+* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard (you can still create/upload your own keypair if you prefer).
+
+You can either follow the instructions below to create a Cloud9 environment to work from, or use the API keys from the dashboard with your own locally-installed version of the AWS CLI.
 
 ### Personal AWS cluster from scratch
 
@@ -84,7 +86,7 @@ $ aws configure
  
 enter access key id and secret access key -> return -> return
 
-Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/)
+Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). Packer is a CLI tool which automates the creation of Amazon Machine Images (AMIs) using a simple config file. An AMI is effectively a golden image, containing a set of user-defined packages and configuration changes applied on top of a base image (usually provided by AWS or the OS provider).
 
 ~~~
 

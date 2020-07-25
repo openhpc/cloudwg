@@ -95,7 +95,9 @@ $ perl -pi -e "s/ohpc-ami-compute/${AMI_COMPUTE}/g" slurm-static-ohpc.yml
 
 ~~~
 
-And deploy our template
+If you chose a different name for your SSH keypair, or if you are using the pre-generated keypair in an EventEngine account, you should also edit the CloudFormation YAML file to reflect the new key name.
+
+Finally, deploy the template:
 
 ~~~
 
@@ -103,7 +105,9 @@ $ aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities
 
 ~~~
 
-If everything worked correctly, you'll now be able to SSH into your login node using your SSH keys and the "centos" user account.
+If everything worked correctly, you'll now be able to SSH into your login node using your SSH keys and the "centos" user account. You can identify the controller and login instances (and their DNS names or IP addresses) by accessing the EC2 page of your AWS console.
+
+After the CloudFormation deployment command returns successfully, allow a few minutes for the NFS mount and Slurm configuration to complete before connecting via SSH.
 
 ~~~
 
