@@ -26,3 +26,9 @@ dnf -y install wget curl python3-pip jq git make nfs-utils
 
 pip3 install awscli
 
+# more recent version of podman
+dnf -y module disable container-tools
+dnf -y install 'dnf-command(copr)'
+dnf -y copr enable rhcontainerbot/container-selinux
+curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8/devel:kubic:libcontainers:stable.repo
+dnf -y install podman

@@ -37,5 +37,5 @@ echo ""
 cd cfn-templates/ 
 echo "Running the following command in" $PWD:
 echo "aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex1 --region $OHPC_AWS_REGION" 
-aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex1 --region $OHPC_AWS_REGION --tag STATUS=DEV && cd ..
+time aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex1-$$ --region $OHPC_AWS_REGION --tag STATUS=DEV && cd ..
 

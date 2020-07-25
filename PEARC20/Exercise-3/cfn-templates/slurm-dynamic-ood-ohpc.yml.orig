@@ -25,7 +25,7 @@ Parameters:
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
-    Default: t3.micro
+    Default: t3.2xlarge
     AllowedValues:
       - t3.micro
       - t3.2xlarge
@@ -126,8 +126,12 @@ Resources:
           ToPort: '443'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: '8080'
-          ToPort: '8080'
+          FromPort: '8787'
+          ToPort: '8787'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8888'
+          ToPort: '8888'
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
