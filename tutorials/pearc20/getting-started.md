@@ -37,7 +37,7 @@ At this stage, you will be presented with a clean, temporary AWS account into wh
 For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; you can follow the instructions below to get started. Key differences to note:
 
 * EventEngine accounts are temporary, but free - you will not need to enter any payment information.
-* Within an EventEngine account, you will *not* neet to create an IAM user; your login user will already have the required permissions.
+* Within an EventEngine account, you will *not* need to create an IAM user; your login user will already have the required permissions.
 * Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard (you can still create/upload your own keypair if you prefer).
 
 You can either follow the instructions below to create a Cloud9 environment to work from, or use the API keys from the dashboard with your own locally-installed version of the AWS CLI.
@@ -49,23 +49,24 @@ After finishing these two exercises, you will have your own system that can then
 
 #### Create a new AWS account
 
-* Go to https://aws.amazon.com/console/ -> create a free account
-* Set up a Basic Plan (Free)
-* You will have to enter CC information, but every exercise on this website uses free tier resources
-* Sign into AWS as the "Root user" with the account you just created
-* Services -> IAM -> Add user
+* Go to https://aws.amazon.com/console/ -> create a free account.
+* Set up a Basic Plan (Free).
+* You will be required to enter payment information, but exercises described here use free-tier compute resources by default.
+* Sign into AWS as the "Root user" with the account you just created.
+* Navigate to Services -> IAM -> Add user.
 * Enter user name and select both the "Programmatic access" and the "AWS Management Console access" boxes.
-* Hit next to go to the Set permissions page and sleect the 3rd box from the top menu "Attach existing policies directly"
+* Hit next to go to the Set permissions page and select the 3rd box from the top menu "Attach existing policies directly".
 * Check AdministratorAccess -> Next -> Create user
-* Capture the Access Key ID and the Secret access key for later use
-
+* Capture the Access Key ID and the Secret access key for later use.
 
 Sign out of AWS as the Root user and sign back in, this time using the IAM user account you just created.
 
+Note that this IAM user account has effectively unrestricted access to create/delete resources within your AWS account - take care when experimenting and ensure that resources are deleted when you are finished to avoid unnecessary charges.
+
 #### Create an EC2 Key Pair
 
-* Services -> EC2 -> Key Pairs
-* Create key pair 
+* Navigate to Services -> EC2 -> Key Pairs.
+* Create key pair.
 * name=pearc20; file format pem -> create key pair
 * Your web browser will now download pearc20.pem
 * Save the pearc20.pem private key; we will need it later
