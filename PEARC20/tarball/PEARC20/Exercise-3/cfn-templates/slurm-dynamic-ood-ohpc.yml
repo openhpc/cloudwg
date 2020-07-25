@@ -105,7 +105,7 @@ Resources:
     Properties:
       RouteTableId: !Ref ClusterRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      InstanceId: !Ref SlurmManagement
+      InstanceId: !Ref X2goMangement
 
   ExternalAccessSG:
     Type: AWS::EC2::SecurityGroup
@@ -229,20 +229,20 @@ Resources:
       ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
       VpcId: !Ref ClusterVPC
 
-  SlurmManagementElasticIP:
+  X2goMangementElasticIP:
     Type: AWS::EC2::EIP
-    DependsOn: SlurmManagement
+    DependsOn: X2goMangement
     Properties:
-      InstanceId: !Ref SlurmManagement
+      InstanceId: !Ref X2goMangement
       
-  SlurmLoginElasticIP:
+  OODLoginElasticIP:
     Type: AWS::EC2::EIP
-    DependsOn: SlurmLogin
+    DependsOn: OODLogin
     Condition: LoginEnabled
     Properties:
-      InstanceId: !Ref SlurmLogin
+      InstanceId: !Ref OODLogin
       
-  SlurmManagement:
+  X2goMangement:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: !GetAtt ClusterPublicSubnet.AvailabilityZone
@@ -262,7 +262,7 @@ Resources:
             VolumeType: gp2
       Tags:
         - Key: Name
-          Value: SlurmManagement
+          Value: X2goMangement
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
@@ -302,9 +302,9 @@ Resources:
           systemctl start x2gocleansessions
           systemctl enable x2gocleansessions
 
-  SlurmLogin:
+  OODLogin:
     Condition: LoginEnabled
-    DependsOn: SlurmManagement
+    DependsOn: X2goMangement
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: !GetAtt ClusterPublicSubnet.AvailabilityZone
@@ -322,7 +322,7 @@ Resources:
             VolumeType: gp2
       Tags:
         - Key: Name
-          Value: SlurmLogin
+          Value: OODLogin
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
@@ -349,20 +349,20 @@ Resources:
 
 
 Outputs:
-  SlurmManagementPublicIP:
+  X2goMangementPublicIP:
     Description: Slurm Management Endpoint
-    Value: !GetAtt SlurmManagement.PublicIp
+    Value: !GetAtt X2goMangement.PublicIp
     
-  SlurmManagementPrivateIP:
+  X2goMangementPrivateIP:
     Description: Slurm Management Endpoint
-    Value: !GetAtt SlurmManagement.PrivateIp
+    Value: !GetAtt X2goMangement.PrivateIp
 
-  SlurmLoginPublicIP:
+  OODLoginPublicIP:
     Description: Slurm Login Endpoint
     Condition: LoginEnabled
-    Value: !GetAtt SlurmLogin.PublicIp
+    Value: !GetAtt OODLogin.PublicIp
     
-  SlurmLoginPrivateIP:
+  OODLoginPrivateIP:
     Description: Slurm Login Endpoint
     Condition: LoginEnabled
-    Value: !GetAtt SlurmLogin.PrivateIp
+    Value: !GetAtt OODLogin.PrivateIp
