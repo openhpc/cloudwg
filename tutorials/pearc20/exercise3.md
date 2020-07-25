@@ -59,10 +59,12 @@ Since we are using pre-built AMIs, all we need to do is deploy the template and 
 ~~~
 
 $ cd ~/PEARC20/Exercise-3/cfn-templates
-$ aws cloudformation deploy --template-file slurm-dynamic-ood-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex3-$$ --region us-east-1
+$ aws cloudformation deploy --template-file slurm-dynamic-ood-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex3-00 --region us-east-1
 ~~~
 
-To monitor, go to Console > Services > CloudFormation > Click the stack name (ex3-xxxxx) > Events
+To monitor, go to Console > Services > CloudFormation > Click the stack name (ex3-00) > Events
+
+***Note: If you need to rerun the `aws cloudformation deploy` command, you'll need to either delete your stack or increment the index (i.e. --stack-name ex3-01) in order to rerun the command***
 
 
 ### Testing the cluster
@@ -96,7 +98,7 @@ It will take between 5-6 mins from submission time for the job to start.
 
 In addition to command line access, this management node can also be used to provide remote desktops.
 
-***Note: This is NOT good practice. This is just an educational exercise. For production use separate x2go from management services***
+***Note: This is NOT good practice. This is just an educational exercise. For production, use separate x2go login nodes and an isolated management node***
 
 Testing X2go:
 
@@ -116,7 +118,7 @@ You should now have a remote desktop running XFCE.
 
 #### Open OnDemand Web Portal
 
-In Exercise 1, we provised a management node and 2 compute nodes. In this Exercise, we've created an elastic cluster with a management node running x2go and an additional login node.
+In Exercise 1, we provisoned a management node and 2 compute nodes. In this Exercise, we've created an elastic cluster with a management node running x2go and an additional login node.
 This additional login node has been provisioned with [Open OnDemand](https://openondemand.org/), an NSF-funded open-source HPC portal.
 
 It provides:
