@@ -5,7 +5,7 @@ parent: PEARC 2020 Tutorial
 nav_order: 5
 ---
 
-# Exercise 3 
+# Exercise 3: Building a Testbed 
 ## An elastic OpenHPC system with Open OnDemand and X2go
 
 In this exercise, we will be provisioning a second OpenHPC system in Amazon Elastic Compute Cloud (Amazon EC2). 

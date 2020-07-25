@@ -5,7 +5,7 @@ parent: PEARC 2020 Tutorial
 nav_order: 3
 ---
 
-# Exercise 1 
+# Exercise 1: HPC in the cloud
 ## Provisioning a simple OpenHPC system in Amazon EC2
 
 In this exercise, we will be provisioning an OpenHPC system in Amazon Elastic Compute Cloud (Amazon EC2). 
