@@ -106,7 +106,10 @@ And finally, we can test our cluster:
 
 $ cp /opt/ohpc/pub/examples/mpi/hello.c .
 $ mpicc hello.c
-$ cp /opt/ohpc/pub/examples/slurm/job.mpi .
-$ sbatch job.mpi
+$ srun -N 2 -n 16 --pty prun ./a.out 
 
 ~~~
+
+That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.html) on working with the OpenHPC software stack.
+
+When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-xxxxx) > Delete
