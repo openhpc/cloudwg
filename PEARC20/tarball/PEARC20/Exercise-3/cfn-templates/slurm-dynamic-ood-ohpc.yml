@@ -299,6 +299,8 @@ Resources:
           cp /etc/slurm/slurm.conf /home/.slurmconf
           touch /etc/slurm/power_save.log
           chown slurm:slurm /etc/slurm/power_save.log
+          systemctl start x2gocleansessions
+          systemctl enable x2gocleansessions
 
   SlurmLogin:
     Condition: LoginEnabled
