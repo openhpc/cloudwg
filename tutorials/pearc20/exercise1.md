@@ -36,7 +36,10 @@ The remainder of this tutorial assumes you extracted the tarball into ~ and you'
 ### Building the AMIs
 
 The first thing we need to do is to build two AMIs, one for the login/master node (controller) and one for the compute nodes.
-To do this we will be using [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/).
+To do this we will be using [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). 
+If you did not install packer in your Cloud9 instance previously, please return to the [Configure Cloud9 Instace](getting-started.html#create-and-configure-cloud9-instance) section of the [Getting Started](getting-started.html) page
+
+***Note: Building both AMIs can be done in parallel. Either open two terminals in Cloud9, or use a virtual terminal multiplexer, such as `screen`***
 
 #### Controller AMI
 
@@ -79,13 +82,15 @@ And then, finally deploy the cloud formation template:
 
 ~~~
 
-$ aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex1-$$ --region us-east-1
+$ aws cloudformation deploy --template-file slurm-static-ohpc.yml --capabilities CAPABILITY_IAM --stack-name ex1-00 --region us-east-1
 
 ~~~
 
 You can monitor the status of the deployment with the CloudFormation dashboard.
 
-Console > Services > CloudFormation > Click the Stack name (ex1-#####) > Events
+Console > Services > CloudFormation > Click the Stack name > Events
+
+***Note: If you need to rerun the `aws cloudformation deploy` command, you'll need to either delete your stack or increment the index (i.e. --stack-name ex1-01) in order to rerun the command***
 
 If everything worked correctly, you'll now be able to SSH into your login node using your "pearc20" key pair and the "centos" user account. You can identify the controller and login instances (and their DNS names or IP addresses) by accessing the EC2 page of your AWS console.
 
@@ -110,6 +115,37 @@ $ srun -N 2 -n 16 --pty prun ./a.out
 
 ~~~
 
-That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.html) on working with the OpenHPC software stack.
+If everything is working correctly, you should see something similar to the following:
 
-When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-xxxxx) > Delete
+~~~
+
+[centos@ip-192-168-0-100 ~]$ srun -N 2 -n 16 --pty prun ./a.out 
+[prun] Master compute host = ip-192-168-1-101
+[prun] Resource manager = slurm
+[prun] Launch cmd = mpirun ./a.out (family=openmpi4)
+
+ Hello, world (16 procs total)
+    --> Process #   5 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   7 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   9 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  13 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   8 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  11 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  10 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   4 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   1 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   3 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   0 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   2 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #  15 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   6 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #  14 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  12 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+[centos@ip-192-168-0-100 ~]$ 
+
+~~~
+
+That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.html) on working with the OpenHPC software stack.
+If you are attending this tutorial live, you can use your provided "standalone cluster" account instead.
+
+***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***

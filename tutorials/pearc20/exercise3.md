@@ -8,14 +8,14 @@ nav_order: 5
 # Exercise 3: Building a Testbed 
 ## An elastic OpenHPC system with Open OnDemand and X2go
 
-In this exercise, we will be provisioning a second OpenHPC system in Amazon Elastic Compute Cloud (Amazon EC2). 
+In this exercise, we will be provisioning a second OpenHPC system in Amazon EC2.
 
 This system will feature:
 
 * a full OpenHPC software stack
 * containerization support using Podman and Singularity
-* Open Ondeman web portal
-* X2go login node for remote X sessions
+* Open Ondemand web portal
+* X2go login node for remote desktop sessions based on [XFCE](https://www.xfce.org/).
 
 In order to begin following along, you need to first follow the directions on the [Getting Started](getting-started.html) page in [Personal AWS cluster from scratch](getting-started.html#personal-aws-cluster-from-scratch) section or be running an [EventEngine tutorial cluster](getting-started.html#eventengine-tutorial-cluster). 
 
@@ -27,7 +27,7 @@ You will need:
 
 If you are missing any of the above, please return to the [Getting Started](getting-started.html) page
 
-Additionally, you'll need to tutorial content. 
+Additionally, you'll need the tutorial content. 
 
 ~~~
 
@@ -36,20 +36,20 @@ $ wget -c https://github.com/utdsimmons/pearc2020/raw/master/ohpc-pearc20-tutori
 
 ~~~
 
-The remainder of this tutorial assumes you extracted the tarball into ~ and you'll be working in ~/PEARC20
+***Note: The remainder of this exercise assumes you extracted the tarball into ~ and you'll be working in ~/PEARC20***
 
 
 
 ### The AMIs
 
-In Exercise 1 we built our own AMIs using using [Packer](https://www.packer.io/). 
+In Exercise 1, we built our own AMIs using using [Packer](https://www.packer.io/). 
 In this Exercise, we will use pre-built AMIs. 
 
 
 | AMI Name|Region|AMI ID
 | X2goManagement|us-east-1|ami-0834bf7fd0bc7f1d9
 | OODLogin|us-east-1|ami-095a1fbc357e55b1e
-| Computer|us-east-1|ami-06762eb064725ebde
+| Compute|us-east-1|ami-06762eb064725ebde
 
 If you'd like to build and customize your own AMIs, the sources are located in ~/PEARC20/Exercise-3/packer-templates/
 
