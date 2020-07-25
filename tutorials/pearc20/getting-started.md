@@ -30,11 +30,15 @@ In order to request acess, join the [OpenHPC
 Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMjc5MmJlMjJlY2ExNzYyYzcyN2M3OTkyMTcwOWI4YzlkMmEyMzIzODZhYzIxYzIwZDE2NWEyNmMzNzVhMTY)
 and request a hash in the #tutorials channel.
 
-Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login), enter the hash and in a few minutes you will be provided with:
-* A terminal in a web browser which is running Cloud9, a Cloud IDE
-* All files needed to follow the tutorial and remaining exercises
+Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login) and enter the hash to access a dashboard containing account credentials and log-in links. While on this page, you should save the pre-created private-key and API keys, then click the link to enter the AWS console.
 
-Systems deployed using EventEngine will be available for 48 hours after you receive the hash (not redeem).
+At this stage, you will be presented with a clean, temporary AWS account into which you can deploy the templates from the tutorial. Accounts deployed using EventEngine will be available for 48 hours from the start of the tutorial, after which point all accounts and their contents will be deleted.
+
+For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; you can follow the instructions below to get started. Key differences to note:
+
+* EventEngine accounts are temporary, but free - you will not need to enter any payment information.
+* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard (you can still create/upload your own keypair if you prefer).
+* Within an EventEngine account, you will *not* neet to create an IAM user; your login user will already have the required permissions.
 
 ### Personal AWS cluster from scratch
 
