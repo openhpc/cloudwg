@@ -77,15 +77,7 @@ Note that this IAM user account has effectively unrestricted access to create/de
 * Accept the default environment settings -> create environment
 * Services > Cloud9 > Open IDE
 
-In the cloud9 terminal run:
-
-~~~
-
-$ aws configure
-
-~~~
- 
-enter access key id and secret access key -> return -> return
+In the cloud9 terminal, set your `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY_ID` as environment variables (if you are using and EventEngine account, you should paste the full set of credentials which were presented just before accessing the console). You will need to set these API keys each time you log in to a Cloud9 session.
 
 Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). Packer is a CLI tool which automates the creation of Amazon Machine Images (AMIs) using a simple config file. An AMI is effectively a golden image, containing a set of user-defined packages and configuration changes applied on top of a base image (usually provided by AWS or the OS provider).
 
