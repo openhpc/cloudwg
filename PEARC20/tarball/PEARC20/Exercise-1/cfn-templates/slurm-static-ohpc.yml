@@ -1,0 +1,420 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Complete AWS SLURM Cluster
+
+Parameters:
+
+  AllocateLoginNode:
+    Description: Specify whether to create a login node
+    Default: FALSE
+    Type: String
+    AllowedValues:
+      - TRUE
+      - FALSE
+
+  KeyName:
+    Description: The EC2 Key Pair to allow SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+    Default: pearc20
+  
+  HeadAMI:
+    Description: AMI to use for head node.
+    Type: String
+    Default: OHPC_CONTROLLER_AMI
+
+  HeadInstanceType:
+    Description: Instance type to be used for Slurm Headnode/Management Node.
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.2xlarge
+
+  LoginAMI:
+    Description: AMI to use for login node.
+    Type: String
+    Default: OHPC_COMPUTE_AMI
+
+  LoginInstanceType:
+    Description: Instance type to be used for Slurm Headnode/Management Node.
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.2xlarge
+
+  ComputeAMI:
+    Description: AMI to use for compute nodes.
+    Type: String
+    Default: OHPC_COMPUTE_AMI
+    
+Conditions:
+
+  LoginEnabled:
+    !Equals [ !Ref AllocateLoginNode, TRUE ]
+
+Resources:
+
+  ClusterVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.0.0/16
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: SLURM cluster VPC
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: SlurmClusterInternetGateway
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref ClusterVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  ClusterRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ClusterVPC
+      Tags:
+        - Key: Name
+          Value: ClusterRouteTable
+          
+  ExternalRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ClusterVPC
+      Tags:
+        - Key: Name
+          Value: ExternalRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ExternalRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  ClusterEC2NATRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ClusterRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      InstanceId: !Ref SlurmManagement
+
+  ExternalAccessSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH Access to Instance
+      VpcId: !Ref ClusterVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: ExternalAccessSecurityGroup
+
+  ClusterPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ClusterVPC
+      MapPublicIpOnLaunch: false
+      CidrBlock: 192.168.0.0/24
+      AvailabilityZone: !Select
+        - '0'
+        - !GetAZs ''
+      Tags:
+        - Key: Name
+          Value: SlurmPublicSubnet
+          
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ClusterPublicSubnet
+      RouteTableId: !Ref ExternalRouteTable
+
+  ClusterComputeSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref ClusterVPC
+      MapPublicIpOnLaunch: false
+      CidrBlock: 192.168.1.0/24
+      AvailabilityZone: !Select
+        - '0'
+        - !GetAZs ''
+      Tags:
+        - Key: Name
+          Value: SlurmComputeSubnet
+
+  ClusterComputeSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ClusterComputeSubnet
+      RouteTableId: !Ref ClusterRouteTable
+      
+  ClusterSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow all local traffic
+      VpcId: !Ref ClusterVPC
+
+  ClusterSGIngressRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+        GroupId: !Ref ClusterSG
+        IpProtocol: -1
+        FromPort: 1
+        ToPort: 65535
+        SourceSecurityGroupId: !GetAtt ClusterSG.GroupId
+
+  SlurmHeadRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                - 'ec2.amazonaws.com'
+              Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+      - PolicyName: SlurmEC2
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ec2:*'
+                Resource: '*'
+
+  SlurmHeadProfile:
+    DependsOn: SlurmHeadRole
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref SlurmHeadRole
+
+  SlurmS3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      RouteTableIds:
+        - !Ref ClusterRouteTable
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      VpcId: !Ref ClusterVPC
+
+  SlurmManagementElasticIP:
+    Type: AWS::EC2::EIP
+    DependsOn: SlurmManagement
+    Properties:
+      InstanceId: !Ref SlurmManagement
+      
+  SlurmLoginElasticIP:
+    Type: AWS::EC2::EIP
+    DependsOn: SlurmLogin
+    Condition: LoginEnabled
+    Properties:
+      InstanceId: !Ref SlurmLogin
+      
+  SlurmManagement:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !GetAtt ClusterPublicSubnet.AvailabilityZone
+      IamInstanceProfile: !Ref SlurmHeadProfile
+      ImageId: !Ref HeadAMI
+      InstanceType: !Ref HeadInstanceType
+      KeyName: !Ref KeyName
+      SubnetId: !Ref ClusterPublicSubnet
+      PrivateIpAddress: 192.168.0.100
+      SecurityGroupIds: [ !Ref ClusterSG , !Ref ExternalAccessSG ]
+      SourceDestCheck: false
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 340
+            DeleteOnTermination: true
+            VolumeType: gp2
+      Tags:
+        - Key: Name
+          Value: SlurmManagement
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/ip_forward.conf
+          sysctl -w net.ipv4.ip_forward=1
+          dnf -y install iptables-services
+          iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/16 -j MASQUERADE
+          service iptables save
+          systemctl start iptables
+          systemctl enable iptables
+          echo "/home *(rw,no_subtree_check,fsid=10,no_root_squash)" >> /etc/exports
+          echo "/opt/ohpc/pub *(ro,no_subtree_check,fsid=11)" >> /etc/exports
+          exportfs -a
+          systemctl restart nfs-server
+          systemctl enable nfs-server
+          curl https://gist.githubusercontent.com/ChrisDowning/9bd05231f6153d8b720cbda47e68cda2/raw/e91061ee76bcf2a540e53699b34fa2a885f4f423/slurm.conf > /etc/slurm/slurm.conf
+          systemctl start munge
+          systemctl enable munge
+          cp /etc/munge/munge.key /home/.munge
+          systemctl start slurmctld
+          systemctl enable slurmctld
+          cp /etc/slurm/slurm.conf /home/.slurmconf
+
+  SlurmLogin:
+    Condition: LoginEnabled
+    DependsOn: SlurmManagement
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !GetAtt ClusterPublicSubnet.AvailabilityZone
+      ImageId: !Ref LoginAMI
+      InstanceType: !Ref LoginInstanceType
+      KeyName: !Ref KeyName
+      SubnetId: !Ref ClusterPublicSubnet
+      PrivateIpAddress: 192.168.0.200
+      SecurityGroupIds: [ !Ref ClusterSG , !Ref ExternalAccessSG ]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 340
+            DeleteOnTermination: true
+            VolumeType: gp2
+      Tags:
+        - Key: Name
+          Value: SlurmLogin
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
+          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
+          echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
+          mount -a
+          cp /home/.slurmconf /etc/slurm/slurm.conf
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
+
+  SlurmCompute01:
+    DependsOn: SlurmManagement
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !GetAtt ClusterComputeSubnet.AvailabilityZone
+      ImageId: !Ref ComputeAMI
+      InstanceType: t3.2xlarge
+      KeyName: !Ref KeyName
+      SubnetId: !Ref ClusterComputeSubnet
+      PrivateIpAddress: 192.168.1.101
+      SecurityGroupIds: [ !Ref ClusterSG ]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 340
+            DeleteOnTermination: true
+            VolumeType: gp2
+      Tags:
+        - Key: Name
+          Value: SlurmCompute
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
+          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
+          echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
+          mount -a
+          cp /home/.slurmconf /etc/slurm/slurm.conf
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
+          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
+          systemctl start slurmd
+          systemctl enable slurmd
+
+  SlurmCompute02:
+    DependsOn: SlurmManagement
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !GetAtt ClusterComputeSubnet.AvailabilityZone
+      ImageId: !Ref ComputeAMI
+      InstanceType: t3.2xlarge
+      KeyName: !Ref KeyName
+      SubnetId: !Ref ClusterComputeSubnet
+      PrivateIpAddress: 192.168.1.102
+      SecurityGroupIds: [ !Ref ClusterSG ]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 340
+            DeleteOnTermination: true
+            VolumeType: gp2
+      Tags:
+        - Key: Name
+          Value: SlurmCompute
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
+          setenforce 0
+          sleep 180
+          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
+          echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
+          mount -a
+          cp /home/.slurmconf /etc/slurm/slurm.conf
+          cp /home/.munge /etc/munge/munge.key
+          chown munge:munge /etc/munge/munge.key
+          systemctl start munge
+          systemctl enable munge
+          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
+          systemctl restart slurmd
+          systemctl enable slurmd
+
+Outputs:
+  SlurmManagementPublicIP:
+    Description: Slurm Management Endpoint
+    Value: !GetAtt SlurmManagement.PublicIp
+    
+  SlurmManagementPrivateIP:
+    Description: Slurm Management Endpoint
+    Value: !GetAtt SlurmManagement.PrivateIp
+
+  SlurmLoginPublicIP:
+    Description: Slurm Login Endpoint
+    Condition: LoginEnabled
+    Value: !GetAtt SlurmLogin.PublicIp
+    
+  SlurmLoginPrivateIP:
+    Description: Slurm Login Endpoint
+    Condition: LoginEnabled
+    Value: !GetAtt SlurmLogin.PrivateIp
