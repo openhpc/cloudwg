@@ -5,11 +5,13 @@ parent: PEARC 2020 Tutorial
 nav_order: 3
 ---
 
+
 # Exercise 1: HPC in the cloud
 ## Provisioning a simple OpenHPC system in Amazon EC2
 
+
 In this exercise, we will be provisioning an OpenHPC system in Amazon Elastic Compute Cloud (Amazon EC2). 
-In order to begin following along, you need to first follow the directions on the [Getting Started](getting-started.html) page in [Personal AWS cluster from scratch](getting-started.html#personal-aws-cluster-from-scratch) section are be running an [EventEngine tutorial cluster](getting-started.html#eventengine-tutorial-cluster). 
+In order to begin following along, you need to first follow the directions on the [Getting Started](getting-started.html) page in [Personal AWS cluster from scratch](getting-started.html#personal-aws-cluster-from-scratch) section or be running an [EventEngine tutorial cluster](getting-started.html#eventengine-tutorial-cluster). 
 
 You will need:
 
@@ -36,7 +38,7 @@ The remainder of this tutorial assumes you extracted the tarball into ~ and you'
 ### Building the AMIs
 
 The first thing we need to do is to build two AMIs, one for the login/master node (controller) and one for the compute nodes.
-To do this we will be using [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). 
+To do this, we will be using [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). 
 If you did not install packer in your Cloud9 instance previously, please return to the [Configure Cloud9 Instace](getting-started.html#create-and-configure-cloud9-instance) section of the [Getting Started](getting-started.html) page
 
 ***Note: Building both AMIs can be done in parallel. Either open two terminals in Cloud9, or use a virtual terminal multiplexer, such as `screen`***
@@ -73,7 +75,7 @@ $ cd ~/PEARC20/Exercise-1/cfn-templates
 ~~~
 
 Now, we are going to run the cloud formation template that will deploy our cluster.
-But first, we need to update the template to include the AMIs we just built.
+But first, we need to update the template to include the AMIs we just built. The text editors `vim`, `emacs`, and `nano` are all available.
 
 
 Edit the slurm-static-ohpc.yml file in ~/PEARC20/Exercise-1/cfn-templates/slurm-static-ohpc.yml and replace OHPC_CONTROLLER_AMI and both entries of OHPC_COMPUTE_AMI with the AMI IDs you just generated with packer.
@@ -149,3 +151,58 @@ That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.ht
 If you are attending this tutorial live, you can use your provided "standalone cluster" account instead.
 
 ***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***
+
+## Bail out command
+
+Finally, if nothing worked and you just want to go to [Exercise 2](exercise2.html), you can use the following commands:
+
+~~~
+
+$ cd ~/PEARC20/Exercise-1/recover
+$ sh bail-me-out.sh
+
+~~~
+
+***Note: If you get messages about "waiting for resources", just be patient. :)***
+
+~~~
+
+[centos@ip-192-168-0-100 ~]$ cp /opt/ohpc/pub/examples/mpi/hello.c .
+[centos@ip-192-168-0-100 ~]$ mpicc hello.c
+srun -N 2 -n 16 --pty prun ./a.out 
+[centos@ip-192-168-0-100 ~]$ srun -N 2 -n 16 --pty prun ./a.out 
+srun: Required node not available (down, drained or reserved)
+srun: job 2 queued and waiting for resources
+srun: job 2 has been allocated resources
+[prun] Master compute host = ip-192-168-1-101
+[prun] Resource manager = slurm
+[prun] Launch cmd = mpirun ./a.out (family=openmpi4)
+
+ Hello, world (16 procs total)
+    --> Process #  11 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   5 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   1 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   9 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  13 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   3 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #  14 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   6 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   0 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #   8 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #  15 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   7 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #  10 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   2 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+    --> Process #  12 of  16 is alive. -> ip-192-168-1-102.ec2.internal
+    --> Process #   4 of  16 is alive. -> ip-192-168-1-101.ec2.internal
+[centos@ip-192-168-0-100 ~]$ 
+
+~~~
+
+<details>
+    <summary>CheatCode</summary>
+    Simply copy/paste these commands into Cloud9 IDE to continue to Exercise 2
+    <pre>
+        <code></code>
+    </pre>
+</details>
