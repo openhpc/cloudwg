@@ -39,11 +39,30 @@ The provided instance has:
 
 The provided testbed uses Apache "basic authentication". Before deploying any production services, please consult the [Open OnDemand Authentication Documentation](https://osc.github.io/ood-documentation/master/authentication.html) and use a more secure authentication mechanism.
 
+Document:
+
+* transfering files
+* editing files
+* cli usage
+* link to apps
+* description of where to go from here
+
 ### X2go
+
+alternatives 
 
 
 ### Podman
 
+why use podman
+
+example podman rstudio
+
+example podman jupyter minimal
 
 ### Singularity 
+
+jupyter compute node x2go tensorflow nightly
+
+other singularity tutorials
 
