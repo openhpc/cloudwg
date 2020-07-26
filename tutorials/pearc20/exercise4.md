@@ -6,7 +6,7 @@ nav_order: 6
 ---
 
 # Exercise 4: Exploring our Testbed
-## Open OnDemand, X2go, Containers, and Augmenting our Cluster
+## Open OnDemand, X2go, and Containers
 
 In [Exercise 3:](exercise3.html), we built an elastic cluster that has:
 
