@@ -7,4 +7,3 @@ nav_order: 4
 
 # Exercise 2: OpenHPC and software
 ## Working with the lmod-based hierarchical software system
-### emergency recovery

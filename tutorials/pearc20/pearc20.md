@@ -8,8 +8,8 @@ nav_order: 300
 
 ## PEARC 2020 Tutorial
 
-<span style="color: red">*Note: this tutorial is work in progress in preparation
-for the PEARC conference in July 2020.*</span>
+
+<span style="color: red"> ***Note: This is the original tutorial proposal. Content as presented was slightly changed.*** </span>
 {: .fs-2}
 
 ---
@@ -25,7 +25,6 @@ for the PEARC conference in July 2020.*</span>
 
 ##### Target Audience: HPC cluster operators and users, computational science application developers with an interest in portable HPC software tools and environments including containers, VMs and Cloud Deployments.
 
-***Note: This is the original tutorial proposal. Content as presented was slightly changed.***
 
 ---
 
