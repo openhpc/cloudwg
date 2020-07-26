@@ -102,12 +102,19 @@ After the CloudFormation deployment command returns successfully, allow a few mi
 
 Console > Services > EC2 > Running Instances > Right click Name=SlurmManagement > Connect > Save the hostname to your clipboard (example: ec2-xx-xx-xx-xxx.compute-1.amazonaws.com)
 
-Then, in the Cloud9 IDE:
+Next, we either need to upload our pearc20.pem private key to the cloud9 instance or use an SSH client / terminal locally.
+To upload your key, File > Upload Local File > Select files > Navigate to the Download location of your key (OS / browser specific) and select it > Open.
+Cloud9 uploads files into ~/environment by default.
+
+
+Whether using the key locally or on your cloud9 instance, you'll need to set the permissions to 400.
+
+
 
 ~~~
 
-$ cd ~
-$ ssh -i pearc20.pem centos@ec2-xx-xx-xx-xxx.compute-1.amazonaws.com
+$ chmod 400 /path/to/pearc20.pem
+$ ssh -i /path/to/pearc20.pem centos@ec2-xx-xx-xx-xxx.compute-1.amazonaws.com
 
 
 ~~~
