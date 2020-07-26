@@ -147,13 +147,12 @@ If everything is working correctly, you should see something similar to the foll
 
 ~~~
 
+***If you get messages about "waiting for resources", just be patient. :)***
+
 That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.html) on working with the OpenHPC software stack.
 If you are attending this tutorial live, you can use your provided "standalone cluster" account instead.
 
-
-
-***Note: If you get messages about "waiting for resources", just be patient. :)***
-
+***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***
 
 <details>
     <summary>TLDR</summary>
@@ -164,4 +163,3 @@ If you are attending this tutorial live, you can use your provided "standalone c
     </pre>
 </details>
 
-***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***
