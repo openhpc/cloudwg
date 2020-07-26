@@ -56,8 +56,12 @@ From here, one could [Setup Interactive Apps](https://osc.github.io/ood-document
 
 ### X2go
 
-alternatives 
+In [Exercise 3:](exercise3.html), the Management node was also provisioned with [X2go](https://wiki.x2go.org/doku.php), an open source remote desktop software 
+for Linux that uses a modified NX 3 protocol, from [Nomachine](https://www.nomachine.com/). 
 
+As configured, it uses the [XFCE](https://www.xfce.org/) desktop. 
+
+For more information about X2go, see the [New to X2go Page](https://wiki.x2go.org/doku.php/doc:newtox2go). 
 
 ### Podman
 
