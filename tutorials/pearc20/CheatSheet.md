@@ -5,6 +5,10 @@ parent: PEARC 2020 Tutorial
 nav_order: 8
 ---
 
+Links:
+
+login in node for train accounts: 
+
 clean up AMIs
 
     Console > Services > EC2 > AMIs > Select > Right Click > Deregister > Continue

@@ -16,6 +16,18 @@ git clone https://github.com/ibm-et/jupyter-samples.git &&  podman run -p 8888:8
 
 sudo podman run -d -p 8787:8787 -v $(pwd):/home/rstudio -e PASSWORD=rstudio rocker/rstudio:devel
 
+### Jupyter Examples
+
+This repository contains sample IPython / Jupyter notebooks ranging from tutorials on using popular open source repositories to sample analyses on public data sets to neat notebook hacks.
+
+
+~~~
+
+$ cd ~
+$ git clone https://github.com/ibm-et/jupyter-samples.git
+$ podman run -p 8888:8888 -v ~/jupyter-samples:/home/jovyan jupyter/minimal-notebook
+
+~~~
 
 ***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex3-00) > Delete***
 
