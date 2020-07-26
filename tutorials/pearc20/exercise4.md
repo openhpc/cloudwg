@@ -112,7 +112,5 @@ Out of the box, OpenHPC supports Singularity-based containers.
 Singularity is a performance-centric containerization platform that also allows one to package docker-based containers as easily distributable executables.
 
 
-other singularity tutorials
-
 
 
