@@ -16,7 +16,7 @@ In order to begin following along, you need to first follow the directions on th
 You will need:
 
 * A Cloud9 IDE environment with packer installed
-* A pearc20 key pair and the pearc20.pem file available on the cloud9 instance
+* A pearc20 key pair and the pearc20.pem file accessible
 * The aws command line tool configured with Access Key ID and Secret Access Key
 
 If you are missing any of the above, please return to the [Getting Started](getting-started.html) page
