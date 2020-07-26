@@ -39,13 +39,20 @@ The provided instance has:
 
 The provided testbed uses Apache "basic authentication". Before deploying any production services, please consult the [Open OnDemand Authentication Documentation](https://osc.github.io/ood-documentation/master/authentication.html) and use a more secure authentication mechanism.
 
-Document:
+First, log into Open Ondemand. Go to the AWS Console and then Services > EC2 > Instances > Right click 'OODLogin' > Connect > Copy 'Public DNS' to Clipboard
 
-* transfering files
-* editing files
-* cli usage
-* link to apps
-* description of where to go from here
+Open up Firefox or Chrome and paste the 'Public DNS' entry to address bar.
+
+***Note: Open OnDemand does not support Safari***
+
+You will be presented with a dialogue box. Enter 'centos' for username and 'ood' for the password. Upon login, you'll be presented with the OOD web interface.
+
+* File > Home Directory to open up the interactive file transfer menuu
+* Jobs > Active Jobs to monitor active jobs
+* Jobs > Job Composer to create and submit jobs from the web browser
+* Clusters > PEARC Cluster Shell Acess to open web-based command line access to our elastic cluster
+
+From here, one could [Setup Interactive Apps](https://osc.github.io/ood-documentation/master/app-development/interactive/setup.html) on Open OnDemand.
 
 ### X2go
 
