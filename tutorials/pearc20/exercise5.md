@@ -45,7 +45,6 @@ From there, explore a few R tutorials:
 * [Basic Data Analysis through R/Rstudio](http://web.cs.ucla.edu/~gulzar/rstudio/basic-tutorial.html)
 * [The R Tutorial](https://www.tutorialspoint.com/r/index.htm) developed by the R Development Core Team 
 * [R Tutorial for Beginners](https://www.guru99.com/r-tutorial.html)
-* [R Examples](http://www.rexamples.com/)
 
 Or, explore developing Shiny Apps by starting the [Welcome to Shiny](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/) Tutorial. 
 Shiny is an R package that makes it easy to develop and deploy interactive web applications using R.
