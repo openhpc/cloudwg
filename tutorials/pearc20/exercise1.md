@@ -150,59 +150,18 @@ If everything is working correctly, you should see something similar to the foll
 That it for Exercise 1. You can use this cluster to do [Exercise 2](exercise2.html) on working with the OpenHPC software stack.
 If you are attending this tutorial live, you can use your provided "standalone cluster" account instead.
 
-***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***
 
-## Bail out command
-
-Finally, if nothing worked and you just want to go to [Exercise 2](exercise2.html), you can use the following commands:
-
-~~~
-
-$ cd ~/PEARC20/Exercise-1/recover
-$ sh bail-me-out.sh
-
-~~~
 
 ***Note: If you get messages about "waiting for resources", just be patient. :)***
 
-~~~
-
-[centos@ip-192-168-0-100 ~]$ cp /opt/ohpc/pub/examples/mpi/hello.c .
-[centos@ip-192-168-0-100 ~]$ mpicc hello.c
-srun -N 2 -n 16 --pty prun ./a.out 
-[centos@ip-192-168-0-100 ~]$ srun -N 2 -n 16 --pty prun ./a.out 
-srun: Required node not available (down, drained or reserved)
-srun: job 2 queued and waiting for resources
-srun: job 2 has been allocated resources
-[prun] Master compute host = ip-192-168-1-101
-[prun] Resource manager = slurm
-[prun] Launch cmd = mpirun ./a.out (family=openmpi4)
-
- Hello, world (16 procs total)
-    --> Process #  11 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   5 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #   1 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #   9 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #  13 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   3 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #  14 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   6 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #   0 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #   8 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #  15 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   7 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #  10 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   2 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-    --> Process #  12 of  16 is alive. -> ip-192-168-1-102.ec2.internal
-    --> Process #   4 of  16 is alive. -> ip-192-168-1-101.ec2.internal
-[centos@ip-192-168-0-100 ~]$ 
-
-~~~
 
 <details>
-    <summary>CheatCode</summary>
+    <summary>TLDR</summary>
     Simply copy/paste these commands into Cloud9 IDE to continue to Exercise 2
     <pre>
-        <code></code>
+        <code>bash <(curl -s https://raw.githubusercontent.com/utdsimmons/pearc2020/master/Ex1-TLDR.sh)
+</code>
     </pre>
 </details>
+
+***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex1-00) > Delete***
