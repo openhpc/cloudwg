@@ -100,9 +100,18 @@ For more examples and ideas, visit:
 
 ~~~
 
+Bullet points:
+
+* Docker is the most popular container development platform
+* Docker IAM model is in stark contrast to HPC IAM model
+* Podman uses same syntax as docker but provides rootless execution
+
+
 ### Singularity 
 
-jupyter compute node x2go tensorflow nightly
+Out of the box, OpenHPC supports Singularity-based containers. 
+Singularity is a performance-centric containerization platform that also allows one to package docker-based containers as easily distributable executables.
+
 
 other singularity tutorials
 
