@@ -10,10 +10,10 @@ nav_order: 4
 
 * intel modulefiles
 * lmod defaults
-* ucx vs libfabric
-* hpl
-* osu benchmsrks
-* ohpc test suite
 * lmod save stacks
+* ucx vs libfabric
 * Spack
 * EasyBuild
+
+
+
