@@ -55,7 +55,7 @@ $ packer build controller.yml
 After the build completes, save the AMI hash for use in the cloud formation templates.
 
 
-***Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 consoler: Services -> EC2 -> AMIs***
+***Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 console: Services -> EC2 -> AMIs***
 
 #### Compute AMI
 
@@ -74,7 +74,7 @@ $ cd ~/PEARC20/Exercise-1/cfn-templates
 
 ~~~
 
-Now, we are going to run the cloud formation template that will deploy our cluster.
+Now, we are going to deploy the cloud formation template that will setup our cluster.
 But first, we need to update the template to include the AMIs we just built. The text editors `vim`, `emacs`, and `nano` are all available.
 
 
@@ -82,7 +82,7 @@ Edit the slurm-static-ohpc.yml file in ~/PEARC20/Exercise-1/cfn-templates/slurm-
 
 AMI IDs are also available via the EC2 dasboard: Console > Services > EC2 > Images/AMIs 
 
-And then, finally deploy the cloud formation template:
+Once you populate the AMI entries in the CloudFormation template, you are ready to deploy:
 
 ~~~
 
@@ -100,7 +100,7 @@ If everything worked correctly, you'll now be able to SSH into your login node u
 
 After the CloudFormation deployment command returns successfully, allow a few minutes for the NFS mount and Slurm configuration to complete before connecting via SSH.
 
-Console > Services > EC2 > Running Instances > Right click the one with Name=SlurmManagement > Connect > Save the hostname to your clipboard (example: ec2-xx-xx-xx-xxx.compute-1.amazonaws.com)
+Console > Services > EC2 > Running Instances > Right click Name=SlurmManagement > Connect > Save the hostname to your clipboard (example: ec2-xx-xx-xx-xxx.compute-1.amazonaws.com)
 
 Then, in the Cloud9 IDE:
 

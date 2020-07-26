@@ -14,7 +14,7 @@ Open cloud9
     Console > Services > Cloud9 > Open IDE
 
 
-Download Tjutorial Files
+Download Tutorial Files
 
     cd ~ && wget -c https://github.com/utdsimmons/pearc2020/raw/master/ohpc-pearc20-tutorial.tar.bz2 -O - | tar -xj
 
