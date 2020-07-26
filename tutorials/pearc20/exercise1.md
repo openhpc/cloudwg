@@ -55,7 +55,7 @@ $ packer build controller.yml
 After the build completes, save the AMI hash for use in the cloud formation templates.
 
 
-***Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 console. Services -> EC2 -> AMIs***
+***Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 consoler: Services -> EC2 -> AMIs***
 
 #### Compute AMI
 
@@ -79,6 +79,8 @@ But first, we need to update the template to include the AMIs we just built. The
 
 
 Edit the slurm-static-ohpc.yml file in ~/PEARC20/Exercise-1/cfn-templates/slurm-static-ohpc.yml and replace OHPC_CONTROLLER_AMI and both entries of OHPC_COMPUTE_AMI with the AMI IDs you just generated with packer.
+
+AMI IDs are also available via the EC2 dasboard: Console > Services > EC2 > Images/AMIs 
 
 And then, finally deploy the cloud formation template:
 
