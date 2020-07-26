@@ -52,6 +52,8 @@ You will be presented with a dialogue box. Enter 'centos' for username and 'ood'
 * Jobs > Job Composer to create and submit jobs from the web browser
 * Clusters > PEARC Cluster Shell Acess to open web-based command line access to our elastic cluster
 
+Additional AMIs and build scripts will be available in the future to further automate OHPC and Open OnDemand integration.
+
 From here, one could [Setup Interactive Apps](https://osc.github.io/ood-documentation/master/app-development/interactive/setup.html) on Open OnDemand.
 
 ### X2go
