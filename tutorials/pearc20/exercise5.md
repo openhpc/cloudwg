@@ -92,6 +92,15 @@ Once launched, you can click on the URL to open up Firefox on the X2go Server. T
 
 We can now tar up the notebook directory along with the singularity container and distribute to attendees. 
 
+And as a bonus, the same thing can be done with the tensorflow jupyter notebook.
+
+~~~
+
+$ module load singularity
+$ singularity pull docker://tensorflow/tensorflow:nightly-jupyter
+$ srun -N 1 -n 1 --pty ./tensorflow_nightly-jupyter.sif
+
+~~~
 ***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex3-00) > Delete***
 
 
