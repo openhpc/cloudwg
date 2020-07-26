@@ -15,7 +15,7 @@ nav_order: 1
 ### Part 2 -- Building a Testbed: OpenHPC as building blocks for Personal and Campus CI
 
 * [Exercise 3:](exercise3.html) Provisioning a research computing testbed coupling an elastic OpenHPC cluster with an Open OnDemand web portal and X2go-based remote desktops (25 minutes)
-* [Exercise 4:](exercise4.html) Exploring features of our testbed (25 minutes)
+* [Exercise 4:](exercise4.html) Exploring features of our testbed and example use cases (25 minutes)
 * [Exercise 5:](exercise5.html) Using our testbed for self-directed education (25 minutes)
 
 
