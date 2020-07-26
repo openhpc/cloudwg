@@ -31,3 +31,10 @@ $ podman run -p 8888:8888 -v ~/jupyter-samples:/home/jovyan jupyter/minimal-note
 
 ***Note: When you are done with this cluster, you can delete it by going to Console > Services > CloudFormation > Select the stack name radio button (ex3-00) > Delete***
 
+
+* R examples
+* jupyter examples
+* tensorflow tutorial
+* hpl
+* osu benchmsrks
+* ohpc test suite

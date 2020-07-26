@@ -52,13 +52,11 @@ You will be presented with a dialogue box. Enter 'centos' for username and 'ood'
 * Jobs > Job Composer to create and submit jobs from the web browser
 * Clusters > PEARC Cluster Shell Acess to open web-based command line access to our elastic cluster
 
-Additional AMIs and build scripts will be available in the future to further automate OHPC and Open OnDemand integration.
-
 From here, one could [Setup Interactive Apps](https://osc.github.io/ood-documentation/master/app-development/interactive/setup.html) on Open OnDemand.
 
 ### X2go
 
-In [Exercise 3:](exercise3.html), the Management node was also provisioned with [X2go](https://wiki.x2go.org/doku.php), an open source remote desktop software 
+In [Exercise 3](exercise3.html), the Management node was also provisioned with [X2go](https://wiki.x2go.org/doku.php), an open source remote desktop software 
 for Linux that uses a modified NX 3 protocol, from [Nomachine](https://www.nomachine.com/). 
 
 As configured, it uses the [XFCE](https://www.xfce.org/) desktop. 
@@ -70,7 +68,7 @@ For more information about X2go, see the [New to X2go Page](https://wiki.x2go.or
 As part of the Exercise 3 cluster, podman-based containerization support was added. 
 [Podman](https://podman.io/) is a daemonless container engine for developing, managing, and running OCI Containers.
 
-Simply put: `alias docker=podman`. More details [here](https://podman.io/whatis.html).
+Simply put: `alias docker=podman`. 
 
 ~~~
 
@@ -100,12 +98,13 @@ For more examples and ideas, visit:
 
 ~~~
 
-Bullet points:
+Why Podman?
 
 * Docker is the most popular container development platform
 * Docker IAM model is in stark contrast to HPC IAM model
 * Podman uses same syntax as docker but provides rootless execution
 
+For more information see the [Podman Website](https://podman.io/) or the [Whatis Podman Page](https://podman.io/whatis.html).
 
 ### Singularity 
 
@@ -114,4 +113,6 @@ Singularity is a performance-centric containerization platform that also allows 
 
 
 other singularity tutorials
+
+
 
