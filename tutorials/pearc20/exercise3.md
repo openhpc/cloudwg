@@ -5,7 +5,7 @@ parent: PEARC 2020 Tutorial
 nav_order: 5
 ---
 
-# Exercise 3: Building a Testbed 
+# Exercise 3: Building our Testbed 
 ## An elastic OpenHPC system with Open OnDemand and X2go
 
 In this exercise, we will be provisioning a second OpenHPC system in Amazon EC2.
@@ -80,7 +80,7 @@ In Cloud9
 ~~~
 
 $ cd ~
-$ ssh -i pearc20.pem centos@ec2-34-194-250-228.compute-1.amazonaws.com
+$ ssh -i pearc20.pem centos@ec2-xx-xxx-xxx-xxx.compute-1.amazonaws.com
 $ cp /opt/ohpc/pub/examples/mpi/hello.c .
 $ mpicc hello.c
 $ cp /opt/ohpc/pub/examples/slurm/job.mpi .
@@ -89,7 +89,7 @@ $ watch -n 10 squeue
 
 ~~~
 
-In Exercise 1, we deployed a cluster with 2 compute nodes. These compute nodes were static/persistent.
+In Exercise 1, we deployed a cluster with 2 compute nodes. Those compute nodes were static/persistent.
 
 For this exercise, we've deployed an "elastic" cluster. When a job is submitted, the cluster will create EC2 instances for the compute nodes on demand.
 It will take between 5-6 mins from submission time for the job to start.
@@ -137,6 +137,7 @@ Paste this DNS entry into a web browser and enter username: 'centos' and passwor
 
 
 This concludes Exercise 3. This cluster will be used for the remaining exercises.
+
 
 
 
