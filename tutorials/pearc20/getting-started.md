@@ -40,8 +40,8 @@ At this stage, you will be presented with a clean, temporary AWS account into wh
 For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; you can follow the instructions below to get started. Key differences to note:
 
 * EventEngine accounts are temporary, but free - you will not need to enter any payment information.
-* Within an EventEngine account, you will *not* need to create an IAM user; your login user will already have the required permissions.
-* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard (you can still create/upload your own keypair if you prefer).
+* Within an EventEngine account, you will *not* need to create an IAM user; your login user will already have the required permissions to take any actions needed in the console.
+* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard - note however that if you use the EventEngine keypair, you will need to edit and CloudFormation templates you deploy to adjust the key name. For simplicity, we suggest just creating a new SSH key as per the instructions provided here.
 
 All documented instructions assume you will work from a Cloud9 browser-based terminal/IDE - you can follow the instructions below to create a Cloud9 environment to work from. Alternatively, users who are already familiar with the AWS CLI can apply the API keys from the dashboard to their own local environment.
 
