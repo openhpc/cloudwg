@@ -124,7 +124,7 @@ This additional login node has been provisioned with [Open OnDemand](https://ope
 It provides:
 
 * Plugin-free / "clientless" HPC
-* Drag and Drop file management
+* Easy file management
 * Command-line shell access to our cluster
 * Job management, monitoring, and submissions via a robust templating system
 * Optional graphical desktop environments and desktop applications (not configured here)
