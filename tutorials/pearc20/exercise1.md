@@ -99,6 +99,9 @@ If everything worked correctly, you'll now be able to SSH into your login node u
 After the CloudFormation deployment command returns successfully, allow a few minutes for the NFS mount and Slurm configuration to complete before connecting via SSH.
 
 Console > Services > EC2 > Running Instances > Right click the one with Name=SlurmManagement > Connect > Save the hostname to your clipboard (example: ec2-xx-xx-xx-xxx.compute-1.amazonaws.com)
+
+Then, in the Cloud9 IDE:
+
 ~~~
 
 $ cd ~
