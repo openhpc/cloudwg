@@ -25,6 +25,8 @@ for the PEARC conference in July 2020.*</span>
 
 ##### Target Audience: HPC cluster operators and users, computational science application developers with an interest in portable HPC software tools and environments including containers, VMs and Cloud Deployments.
 
+***Note: This is the original tutorial proposal. Content as presented was slightly changed.***
+
 ---
 
 Since its inception as a Linux Foundation project in 2015, the OpenHPC project (<https:///openhpc.community>) 
@@ -55,3 +57,4 @@ software management system
 * customizing OpenHPC-based cluster compute node images
 * adding support for a web-based login node with Open OnDemand (<https://openondemand.org/>)
 * running example workloads via the CLI and the web portal
+
