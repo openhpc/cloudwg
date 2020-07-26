@@ -21,7 +21,7 @@ In this exercise, we discuss a variety of ways to explore and extend our Testbed
 * [Podman](https://podman.io/)
 * [Singularity](https://sylabs.io/docs/)
 
-In addition, we have ways to extend our elastic cluster including:
+In addition, we document ways to extend our elastic cluster including:
 
 * Changing the max number of elastic nodes
 * Changing the default node type
