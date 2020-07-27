@@ -89,6 +89,8 @@ $ srun -N 1 -n 1 --pty ./minimal-notebook_latest.sif
 
 Once launched, you can click on the URL to open up Firefox on the X2go Server. This will connect to the running tutorial notebook session on our elastic compute cluster.
 
+***Note: it is recommended that you submit the job from a terminal in x2go. That way, the jupyter URL is easy to open. Firefox will take a while to load.***
+
 We can now tar up the notebook directory along with the singularity container and distribute to attendees. 
 
 And as a bonus, the same thing can be done with the tensorflow jupyter notebook.
