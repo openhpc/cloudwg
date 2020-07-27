@@ -7,8 +7,6 @@ nav_order: 0
 
 ## Getting Started
 
-<span style="color: red"> ***Note: This will be finalized last once everything else is frozen.*** </span>
-{: .fs-2}
 
 This site and the resulting tutorial is designed to be experienced in 3 ways:
 * [Standalone tutorial cluster](#standalone-tutorial-cluster) run by the OpenHPC team on which you have a user account
