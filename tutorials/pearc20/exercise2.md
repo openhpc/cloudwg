@@ -15,12 +15,7 @@ available in the latest 2.x release series. Class slides for this portion of
 the tutorial start
 [here](https://docs.google.com/presentation/d/1h5rx6OV7PwP8OxhX-2NlKTA0HS9MrrKIvFosbiytBg0/present?slide=id.g8ca8af3103_0_84).
 
-* intel modulefiles (done)
-* lmod defaults (done)
-* lmod save stacks
-* ucx vs libfabric (done)
-* Spack
-* EasyBuild
+
 
 
 
