@@ -1,0 +1,3 @@
+
+CentOS 8	x86_64	controller 	us-east-2	ami-0fc43715aadeea11f
+CentOS 8	x86_64	compute    	us-east-2	ami-0f1bc381ce5e4d923
