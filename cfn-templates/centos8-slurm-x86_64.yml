@@ -11,16 +11,24 @@ Parameters:
       - TRUE
       - FALSE
 
+  EnableTrainingAccounts:
+    Description: Specify whether to create a set of temporary training accounts
+    Default: TRUE
+    Type: String
+    AllowedValues:
+      - TRUE
+      - FALSE
+
   KeyName:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
-    Default: HP-Ubuntu
+    Default: gedanken
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-00aa2fe5297675269
+    Default: ami-05c3a17a02989aab6
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-00000028806222243
+    Default: ami-0f1bc381ce5e4d923
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,12 +54,15 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-00000028806222243
+    Default: ami-0f1bc381ce5e4d923
     
 Conditions:
 
   LoginEnabled:
     !Equals [ !Ref AllocateLoginNode, TRUE ]
+
+  TrainingEnabled:
+    !Equals [ !Ref EnableTrainingAccounts, TRUE ]
 
 Resources:
 
@@ -277,13 +288,31 @@ Resources:
           exportfs -a
           systemctl restart nfs-server
           systemctl enable nfs-server
-          curl https://gist.githubusercontent.com/ChrisDowning/9bd05231f6153d8b720cbda47e68cda2/raw/e91061ee76bcf2a540e53699b34fa2a885f4f423/slurm.conf > /etc/slurm/slurm.conf
+          curl https://gist.githubusercontent.com/ChrisDowning/03289662b40ee102bcab64831c6a5ec9/raw/slurm.conf > /etc/slurm/slurm.conf
+          curl https://gist.githubusercontent.com/ChrisDowning/43226d1d4e25d02a721d7725965f6cb7/raw/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
+          curl https://gist.githubusercontent.com/ChrisDowning/0afbcd4c1a5aca992cedd7ccaaf568f0/raw/slurm-aws-shutdown.sh > /etc/slurm/slurm-aws-shutdown.sh
+          curl https://gist.githubusercontent.com/ChrisDowning/19e2fd13e905e3af84bedc61aebe5629/raw/slurm-compute-userdata.sh > /etc/slurm/slurm-compute-userdata.sh
+          sed -i "s|@COMPUTESG@|${ClusterSG}|g" /etc/slurm/slurm-aws-startup.sh
+          sed -i "s|@SUBNETID@|${ClusterComputeSubnet}|g" /etc/slurm/slurm-aws-startup.sh
+          sed -i "s|@COMPUTEAMI@|${ComputeAMI}|g" /etc/slurm/slurm-aws-startup.sh
+          sed -i "s|@KEYNAME@|${KeyName}|g" /etc/slurm/slurm-aws-startup.sh
+          chmod +x /etc/slurm/slurm-aws-startup.sh
+          chmod +x /etc/slurm/slurm-aws-shutdown.sh
           systemctl start munge
           systemctl enable munge
           cp /etc/munge/munge.key /home/.munge
           systemctl start slurmctld
           systemctl enable slurmctld
           cp /etc/slurm/slurm.conf /home/.slurmconf
+          touch /etc/slurm/power_save.log
+          chown slurm:slurm /etc/slurm/power_save.log
+          # really should trigger off of TrainingEnabled
+          for i in `seq -w 0 30`; do useradd -m "train$i";done
+          # setup LosF config
+          useradd -m losf
+          echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
+          pushd /home/losf; git clone https://github.com/koomie/ec2-losf.git; popd
+          update -q
 
   SlurmLogin:
     Condition: LoginEnabled
@@ -316,89 +345,15 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
-          cp /home/.slurmconf /etc/slurm/slurm.conf
           cp /home/.munge /etc/munge/munge.key
           chown munge:munge /etc/munge/munge.key
           systemctl start munge
           systemctl enable munge
-
-  SlurmCompute01:
-    DependsOn: SlurmManagement
-    Type: AWS::EC2::Instance
-    Properties:
-      AvailabilityZone: !GetAtt ClusterComputeSubnet.AvailabilityZone
-      ImageId: !Ref ComputeAMI
-      InstanceType: t3.2xlarge
-      KeyName: !Ref KeyName
-      SubnetId: !Ref ClusterComputeSubnet
-      PrivateIpAddress: 192.168.1.101
-      SecurityGroupIds: [ !Ref ClusterSG ]
-      BlockDeviceMappings:
-        - DeviceName: /dev/sda1
-          Ebs:
-            VolumeSize: 340
-            DeleteOnTermination: true
-            VolumeType: gp2
-      Tags:
-        - Key: Name
-          Value: SlurmCompute
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe
-          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
-          setenforce 0
-          sleep 180
-          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
-          echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
-          mount -a
-          cp /home/.slurmconf /etc/slurm/slurm.conf
-          cp /home/.munge /etc/munge/munge.key
-          chown munge:munge /etc/munge/munge.key
-          systemctl start munge
-          systemctl enable munge
-          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
           systemctl start slurmd
-          systemctl enable slurmd
-
-  SlurmCompute02:
-    DependsOn: SlurmManagement
-    Type: AWS::EC2::Instance
-    Properties:
-      AvailabilityZone: !GetAtt ClusterComputeSubnet.AvailabilityZone
-      ImageId: !Ref ComputeAMI
-      InstanceType: t3.2xlarge
-      KeyName: !Ref KeyName
-      SubnetId: !Ref ClusterComputeSubnet
-      PrivateIpAddress: 192.168.1.102
-      SecurityGroupIds: [ !Ref ClusterSG ]
-      BlockDeviceMappings:
-        - DeviceName: /dev/sda1
-          Ebs:
-            VolumeSize: 340
-            DeleteOnTermination: true
-            VolumeType: gp2
-      Tags:
-        - Key: Name
-          Value: SlurmCompute
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe
-          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-          sed -i "s|SELINUX=enforcing|SELINUX=permissive|g" /etc/selinux/config
-          setenforce 0
-          sleep 180
-          echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
-          echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
-          mount -a
-          cp /home/.slurmconf /etc/slurm/slurm.conf
-          cp /home/.munge /etc/munge/munge.key
-          chown munge:munge /etc/munge/munge.key
-          systemctl start munge
-          systemctl enable munge
-          echo SLURMD_OPTIONS="--conf-server 192.168.0.100" > /etc/sysconfig/slurmd
-          systemctl restart slurmd
-          systemctl enable slurmd
+          # setup LosF config
+          useradd -m losf
+          echo "/home/losf/ec2-losf" > /opt/ohpc/admin/losf/config/config_dir
+          update -q
 
 Outputs:
   SlurmManagementPublicIP:

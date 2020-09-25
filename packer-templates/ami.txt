@@ -1,3 +1,9 @@
 
-CentOS 8	x86_64	controller 	us-east-2	ami-0fc43715aadeea11f
-CentOS 8	x86_64	compute    	us-east-2	ami-0f1bc381ce5e4d923
+CentOS 8	x86_64	controller 	us-east-2	ami-05c3a17a02989aab6
+
+Leap 15.2	x86_64	controller 	us-east-2	ami-08daf3306d45e1723
+Leap 15.2	x86_64	compute		us-east-2	ami-09f7eeda29e04f6f5
+
+new
+
+CentOS 8	x86_64	compute    	us-east-2	ami-013cbdf67d7878d5c
