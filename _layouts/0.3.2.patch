@@ -1,0 +1,10 @@
+--- default.html	2020-10-06 21:10:32.000000000 -0500
++++ default.html	2020-10-06 21:16:03.000000000 -0500
+@@ -66,7 +66,6 @@
+       {% endif %}
+     </nav>
+     <footer class="site-footer">
+-      This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+     </footer>
+   </div>
+   <div class="main" id="top">
