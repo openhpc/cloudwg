@@ -2,8 +2,8 @@
 title: SC 2020 Tutorial
 layout: default
 has_children: false
-has_toc: false
-nav_exclude: false
+has_toc: true
+nav_exclude: true
 nav_order: 299
 ---
 
