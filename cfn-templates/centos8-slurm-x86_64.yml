@@ -23,12 +23,12 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
-    Default: gedanken
+    Default: csim-trecis
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-05c3a17a02989aab6
+    Default: ami-08549bc004e6de450
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -41,7 +41,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0f1bc381ce5e4d923
+    Default: ami-0a02d6e618721ba59
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -54,7 +54,7 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0f1bc381ce5e4d923
+    Default: ami-0a02d6e618721ba59
     
 Conditions:
 
