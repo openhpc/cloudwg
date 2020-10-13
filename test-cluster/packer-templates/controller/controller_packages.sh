@@ -24,7 +24,7 @@ dnf -y install hdf5-gnu9-ohpc
 
 # install gnu9/mpich and gnu9/openmpi package variants
 dnf -y install ohpc-gnu9-mpich*
-dnf -y install lmod-defaults-gnu9-mpich-ohpc
+dnf -y install lmod-defaults-gnu9-mpich-ofi-ohpc
 dnf -y install wget curl python3-pip jq git make nfs-utils
 
 pip3 install awscli

@@ -20,7 +20,7 @@ Parameters:
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0dbb1399537897c32
+    Default: ami-0436ebbd6b81a7a6d
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +33,7 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-0338c6ff56fc034aa
+    Default: ami-08e8c5fc37016b9b5
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,12 +46,12 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-0338c6ff56fc034aa
+    Default: ami-08e8c5fc37016b9b5
     
 Conditions:
 
   LoginEnabled:
-    !Equals [ !Ref AllocateLoginNode, FALSE ]
+    !Equals [ !Ref AllocateLoginNode, TRUE ]
 
 Resources:
 
@@ -257,7 +257,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: 340
+            VolumeSize: 50
             DeleteOnTermination: true
             VolumeType: gp2
       Tags:
@@ -315,7 +315,7 @@ Resources:
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
-            VolumeSize: 340
+            VolumeSize: 10
             DeleteOnTermination: true
             VolumeType: gp2
       Tags:
