@@ -20,12 +20,12 @@ Parameters:
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0436ebbd6b81a7a6d
+    Default: ami-0ae4aa246ac71d2a3
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
-    Default: t3.micro
+    Default: t3.2xlarge
     AllowedValues:
       - t3.micro
       - t3.2xlarge
