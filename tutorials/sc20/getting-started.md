@@ -7,20 +7,13 @@ nav_order: 0
 
 ## Getting Started
 
-<span style="color: red"> ***Note: This will be finalized last once everything else is frozen.*** </span>
-{: .fs-2}
+
+## DO WE NEED 3 WAYS OR IS EventEngine enough?
 
 This site and the resulting tutorial is designed to be experienced in 3 ways:
 * [Standalone tutorial cluster](#standalone-tutorial-cluster) run by the OpenHPC team on which you have a user account
 * [EventEngine tutorial cluster](#eventengine-tutorial-cluster) on which you have you are provided an account and a cloud9 IDE terminal
 * [Personal AWS cluster](#personal-aws-cluster-from-scratch) you provision from scratch on your own AWS account 
-
-### Standalone Tutorial Cluster
-
-As part of PEARC 2020, the OpenHPC cloud working group has provisioned an OpenHPC cluster at AWS. 
-This cluster will be available from Monday, July 27th 2020 until Friday, August 7th.
-
-User accounts will be provided to tutorial attendees and they will be used for [Exercise 2](exercise2.html) and [Exercise 5](exercise5.html).
 
 
 ### EventEngine Tutorial Cluster
@@ -44,27 +37,6 @@ For the purposes of this tutorial, the EventEngine account will function similar
 * Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard - note however that if you use the EventEngine keypair, you will need to edit any CloudFormation templates you deploy to adjust the key name. For simplicity, we suggest just creating a new SSH key as per the instructions provided here.
 
 All documented instructions assume you will work from a Cloud9 browser-based terminal/IDE - you can follow the instructions below to create a Cloud9 environment to work from. Alternatively, users who are already familiar with the AWS CLI can apply the API keys from the dashboard to their own local environment.
-
-### Personal AWS cluster from scratch
-
-The third way to experience this tutorial is to use your own AWS account and follow along with Exercises 1 and 3. 
-After finishing these two exercises, you will have your own system that can then be used to do Exercise 5.
-
-#### Create a new AWS account
-
-* Go to https://aws.amazon.com/console/ -> create a free account.
-* Set up a Basic Plan (Free).
-* You will be required to enter payment information, but exercises described here use free-tier compute resources by default.
-* Sign into AWS as the "Root user" with the account you just created.
-* Navigate to Services -> IAM -> Add user.
-* Enter user name and select both the "Programmatic access" and the "AWS Management Console access" boxes.
-* Hit next to go to the Set permissions page and select the 3rd box from the top menu "Attach existing policies directly".
-* Check AdministratorAccess -> Next -> Create user
-* Capture the Access Key ID and the Secret access key for later use.
-
-Sign out of AWS as the Root user and sign back in, this time using the IAM user account you just created.
-
-Note that this IAM user account has effectively unrestricted access to create/delete resources within your AWS account - take care when experimenting and ensure that resources are deleted when you are finished to avoid unnecessary charges.
 
 ### Create an EC2 Key Pair
 

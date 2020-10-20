@@ -7,15 +7,21 @@ nav_order: 1
 
 ## Tutorial Outline
 
-### Part 1 -- Introduction to OpenHPC: Concepts, Cloud Provisioning, and the Software Stack
-* [Advanced introduction](intro.html) to OpenHPC with recent updates and developments. (25 mins)
-* [Exercise 1:](exercise1.html) Provisioning a simple OpenHPC system in Amazon Elastic Compute Cloud (Amazon EC2) (25 mins)
-* [Exercise 2:](exercise2.html) Working with the OpenHPC hierarchical software system (25 minutes)
+### Part 1 -- Introduction to OpenHPC: Concepts, Updates and Cloud Introduction
+* [Introduction](intro.html) to OpenHPC with recent updates and developments. (30 mins)
+* [Exercise 1:](exercise1.html) Setting up your AWS (Amazon Web Services) account and building OpenHPC Amazon Machine Images (AMI) (30 mins)
 
-### Part 2 -- Building a Testbed: OpenHPC as building blocks for Personal and Campus CI
+Break -- 15 mins
 
-* [Exercise 3:](exercise3.html) Provisioning a research computing testbed coupling an elastic OpenHPC cluster with an Open OnDemand web portal and X2go-based remote desktops (25 minutes)
-* [Exercise 4:](exercise4.html) Exploring features of our testbed (25 minutes)
-* [Exercise 5:](exercise5.html) Using our testbed system (25 minutes)
+### Part 2 -- Deploying OpenHPC in the Cloud and Working with the Software Stack
+* [Exercise 2:](exercise2.html) Deploying our Elastic OpenHPC at AWS with Cloudformation (30 mins)
+* [Exercise 3:](exercise2.html) Working with the OpenHPC hierarchical software system (30 mins)
+
+Break -- 15 mins
+
+### Part 3 -- Working with Containers and Discussion / Questions
+
+* [Exercise 4:](exercise3.html) Working with containers (45 mins)
+* Discussion and Questions  (15 mins)
 
 
