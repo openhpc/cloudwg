@@ -15,12 +15,10 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
-    Default: ohpcsim
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0ae4aa246ac71d2a3
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -33,7 +31,6 @@ Parameters:
   LoginAMI:
     Description: AMI to use for login node.
     Type: String
-    Default: ami-08e8c5fc37016b9b5
 
   LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
@@ -46,7 +43,6 @@ Parameters:
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
-    Default: ami-08e8c5fc37016b9b5
     
 Conditions:
 
@@ -186,9 +182,21 @@ Resources:
     Properties:
         GroupId: !Ref ClusterSG
         IpProtocol: -1
-        FromPort: 1
-        ToPort: 65535
         SourceSecurityGroupId: !GetAtt ClusterSG.GroupId
+
+  ClusterSGLocalEgressRule:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+        GroupId: !Ref ClusterSG
+        IpProtocol: -1
+        DestinationSecurityGroupId: !GetAtt ClusterSG.GroupId
+
+  ClusterSGExternalEgressRule:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+        GroupId: !Ref ClusterSG
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
 
   SlurmHeadRole:
     Type: AWS::IAM::Role
@@ -210,8 +218,28 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - 'ec2:*'
+                  - 'ec2:RunInstances'
+                Resource:
+                 - !Sub 'arn:aws:ec2:${AWS::Region}::image/ami-*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:instance/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:security-group/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:volume/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:subnet/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:placement-group/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:key-pair/*'
+                 - !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:network-interface/*'
+              - Effect: Allow
+                Action: 'ec2:CreateTags'
                 Resource: '*'
+                Condition:
+                  StringEquals:
+                    'ec2:CreateAction': 'RunInstances'
+              - Effect: Allow
+                Action: 'ec2:Describe*'
+                Resource: '*'
+              - Effect: Allow
+                Action: 'ec2:TerminateInstances'
+                Resource: !Sub 'arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:instance/*'
 
   SlurmHeadProfile:
     DependsOn: SlurmHeadRole
