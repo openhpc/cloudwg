@@ -15,13 +15,13 @@ Break -- 15 mins
 
 ### Part 2 -- Deploying OpenHPC in the Cloud and Working with the Software Stack
 * [Exercise 2:](exercise2.html) Deploying our Elastic OpenHPC at AWS with Cloudformation (30 mins)
-* [Exercise 3:](exercise2.html) Working with the OpenHPC hierarchical software system (30 mins)
+* [Exercise 3:](exercise3.html) Working with the OpenHPC hierarchical software system (30 mins)
 
 Break -- 15 mins
 
 ### Part 3 -- Working with Containers and Discussion / Questions
 
-* [Exercise 4:](exercise3.html) Working with containers (45 mins)
+* [Exercise 4:](exercise4.html) Working with containers (45 mins)
 * Discussion and Questions  (15 mins)
 
 
