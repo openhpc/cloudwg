@@ -31,7 +31,7 @@ Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMj
 and request a hash in the #tutorials channel.
 
 Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login) and enter the hash to access a dashboard containing 
-account credentials and log-in links. **While on this page, you should save the pre-created private-key and API keys before clicking the link 
+account credentials and log-in links. **While on this page, you should save the pre-created private key and API keys before clicking the link 
 to enter the AWS console.**
 
 At this stage, you will be presented with a clean, temporary AWS account into which you can deploy the templates from the tutorial. 
