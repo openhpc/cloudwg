@@ -31,23 +31,26 @@ Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMj
 and request a hash in the #tutorials channel.
 
 Once you have the hash, go to [EventEngine](https://dashboard.eventengine.run/login) and enter the hash to access a dashboard containing 
-account credentials and log-in links. While on this page, you should save the pre-created private-key and API keys, then click the link 
-to enter the AWS console.
+account credentials and log-in links. **While on this page, you should save the pre-created private-key and API keys before clicking the link 
+to enter the AWS console.**
 
 At this stage, you will be presented with a clean, temporary AWS account into which you can deploy the templates from the tutorial. 
 Accounts deployed using EventEngine will be available for 48 hours from the start of the tutorial, after which point all accounts 
 and their contents will be deleted.
 
 For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; 
-you can follow the instructions below to get started. Key differences to note:
+you can follow the instructions below to get started. 
 
+Key differences to note:
 * EventEngine accounts are temporary, but free - you will not need to enter any payment information.
 * Within an EventEngine account, you will *not* need to create an IAM user; 
 your login user will already have the required permissions to take any actions needed in the console.
-* Instead of creating your own keypair, you can use the pre-created key whose contents were shown on the EventEngine dashboard - note however that if you use the EventEngine keypair, you will need to edit any CloudFormation templates you deploy to adjust the key name. For simplicity, we suggest just creating a new SSH key as per the instructions provided here.
 
-All documented instructions assume you will work from an EC2 instance that will be configured with your AWS API keys and have packer installed.
+All documented instructions assume you will work from an EC2 instance that will be configured with your AWS API keys 
+and have packer installed.
 Alternatively, users who are already familiar with the AWS CLI can apply the API keys from the dashboard to their own local environment.
+
+If you have an EventEngine hash and have saved your API keys, you are now ready to start [Exercise 1](exercise1.html).
 
 ### Personal AWS cluster from scratch
 
@@ -63,22 +66,49 @@ The third way to experience this tutorial is to use your own AWS account. This i
 * Enter user name and select both the "Programmatic access" and the "AWS Management Console access" boxes.
 * Hit next to go to the Set permissions page and select the 3rd box from the top menu "Attach existing policies directly".
 * Check AdministratorAccess -> Next -> Create user
-* Capture the Access Key ID and the Secret access key for later use.
+* **Save the Access Key ID and the Secret access key for later use.**
 
 Sign out of AWS as the Root user and sign back in, this time using the IAM user account you just created.
 
 Note that this IAM user account has effectively unrestricted access to create/delete resources within your AWS account - take care when experimenting and ensure that resources are deleted when you are finished to avoid unnecessary charges.
 
 
-### Create and configure the EC2 instance
+#### Create and configure the EC2 instance
 
 (Applies to personal AWS cluster only; this instance is automatically spawned for EventEngine clusters)
 
-* Services > Cloud9 > create environment
-* Accept the default environment settings -> create environment
-* Services > Cloud9 > Open IDE
+* Navigate to Services > EC2 > Instances > Launch Instances
+* Enter the CentOS 8.2 AMI into the Search Box for your region from the [Official and current CentOS Public Images
+](https://wiki.centos.org/Cloud/AWS) page
+* Community AMIs > Select
+* Choose an Instance Type > t2.micro > Review and Launch > Launch
+* Create a new key pair > packer-sc20 > Download key pair > Launch Instances > View Instances
+* Once the status checks pass, right click the instance > Connect > SSH client > copy Public DNS
+* Connect to instance using your packer-SC20.pem SSH key
 
-In the cloud9 terminal, set your API credentials as environment variables (if you are using and EventEngine account, you should paste the full set of credentials which were presented just before accessing the console). You will need to set these API keys each time you log in to a Cloud9 session.
+~~~
+
+$ cp ~/Downloads/packer-sc20.pem .
+$ chmod 400 packer-sc20.pem
+$ ssh -i "packer-sc20.pem" centos@ec2-xx-xxx-x-xxx.us-xxxx-x.compute.amazonaws.com
+
+~~~
+
+
+Once connected to the EC2 instance, install the aws cli client and set your API credentials.
+
+You will need to set these API keys each time you log in to this instance.
+
+
+~~~
+
+$ sudo dnf -y install python36 wget zip
+$ pip3 install --user awscli
+$ export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE # use your AWS_ACCESS_KEY
+$ export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY # use your AWS_SECRET_ACCESS_KEY
+$ export AWS_DEFAULT_REGION=us-east-1 
+
+~~~
 
 Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). Packer is a CLI tool which automates the creation of Amazon Machine Images (AMIs) using a simple config file. An AMI is effectively a golden image, containing a set of user-defined packages and configuration changes applied on top of a base image (usually provided by AWS or the OS provider).
 
@@ -89,17 +119,6 @@ $ wget https://releases.hashicorp.com/packer/1.6.0/packer_1.6.0_linux_amd64.zip
 $ unzip packer_1.6.0_linux_amd64.zip
 
 ~~~
-
-
-### Create an EC2 Key Pair
-
-(Applies to both EventEngine and standard personal accounts)
-
-* Navigate to Services -> EC2 -> Key Pairs.
-* Create key pair.
-* name=sc20; file format pem -> create key pair
-* Your web browser will now download sc20.pem
-* Save the sc20.pem private key; we will need it later
 
 
 You are now ready to start [Exercise 1](exercise1.html).
