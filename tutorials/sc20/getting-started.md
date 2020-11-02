@@ -50,7 +50,7 @@ All documented instructions assume you will work from an EC2 instance that will 
 and have packer installed.
 Alternatively, users who are already familiar with the AWS CLI can apply the API keys from the dashboard to their own local environment.
 
-If you have an EventEngine hash and have saved your API keys, you are now ready to start [Exercise 1](exercise1.html).
+**If you have an EventEngine account and have saved your API and SSH keys, you are now ready to start [Exercise 1](exercise1.html).**
 
 ### Personal AWS cluster from scratch
 
@@ -95,7 +95,7 @@ $ ssh -i "packer-sc20.pem" centos@ec2-xx-xxx-x-xxx.us-xxxx-x.compute.amazonaws.c
 ~~~
 
 
-Once connected to the EC2 instance, install the aws cli client and set your API credentials.
+Once connected to the EC2 instance, install the aws cli client.
 
 You will need to set these API keys each time you log in to this instance.
 
@@ -104,9 +104,6 @@ You will need to set these API keys each time you log in to this instance.
 
 $ sudo dnf -y install python36 wget zip
 $ pip3 install --user awscli
-$ export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE # use your AWS_ACCESS_KEY
-$ export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY # use your AWS_SECRET_ACCESS_KEY
-$ export AWS_DEFAULT_REGION=us-east-1 
 
 ~~~
 
