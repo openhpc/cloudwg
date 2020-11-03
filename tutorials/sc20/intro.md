@@ -14,5 +14,5 @@ Committee.
 The intro slide deck from this tutorial is available 
 [here](https://docs.google.com/presentation/d/1uCorXaj5Cz1qEJiCLzBSpeG0s1iFCqEmtTmDNIsmnEE).
 
-[![sc20(../images/SC20.png){: width="700px"}](https://docs.google.com/presentation/d/1uCorXaj5Cz1qEJiCLzBSpeG0s1iFCqEmtTmDNIsmnEE)
+[![sc20](../images/SC20.png){: width="700px"}](https://docs.google.com/presentation/d/1uCorXaj5Cz1qEJiCLzBSpeG0s1iFCqEmtTmDNIsmnEE)
 
