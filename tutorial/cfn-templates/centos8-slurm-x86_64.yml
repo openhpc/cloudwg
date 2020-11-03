@@ -5,7 +5,7 @@ Parameters:
 
   AllocateLoginNode:
     Description: Specify whether to create a login node
-    Default: FALSE
+    Default: TRUE
     Type: String
     AllowedValues:
       - TRUE
@@ -15,24 +15,16 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+    Default: cluster-sc20
+
   
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
+    Default: ami-0364a5f22bdc69c84
+
 
   HeadInstanceType:
-    Description: Instance type to be used for Slurm Headnode/Management Node.
-    Type: String
-    Default: t3.2xlarge
-    AllowedValues:
-      - t3.micro
-      - t3.2xlarge
-
-  LoginAMI:
-    Description: AMI to use for login node.
-    Type: String
-
-  LoginInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
     Default: t3.micro
@@ -40,9 +32,23 @@ Parameters:
       - t3.micro
       - t3.2xlarge
 
+  LoginAMI:
+    Description: AMI to use for login node.
+    Type: String
+    Default: ami-0120fcf5c7eb203a6
+
+  LoginInstanceType:
+    Description: Instance type to be used for Slurm Headnode/Management Node.
+    Type: String
+    Default: t3.2xlarge
+    AllowedValues:
+      - t3.micro
+      - t3.2xlarge
+
   ComputeAMI:
     Description: AMI to use for compute nodes.
     Type: String
+    Default: ami-0120fcf5c7eb203a6
     
 Conditions:
 
