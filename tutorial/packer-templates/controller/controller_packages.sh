@@ -34,3 +34,6 @@ pip3 install awscli
 dnf -y install zip multitail vim
 dnf -y install python3-mpi4py-gnu9-mpich-ohpc python3-mpi4py-gnu9-openmpi4-ohpc python3-numpy-gnu9-ohpc python3-scipy-gnu9-mpich-ohpc python3-scipy-gnu9-openmpi4-ohpc
 
+# prebake tutorial content
+/usr/local/bin/aws s3 cp s3://ohpc-sc20-tutorial/ContainersHPC.tar.gz - --no-sign-request | tar xz -C /home/centos
+
