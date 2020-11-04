@@ -75,7 +75,7 @@ $ packer build compute.yml
 
 *Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 console: Services -> EC2 -> AMIs*
 
-**Once your packer builder is done and you have your own compute node AMI, you may continue to 
+**Once your packer builder is done and you have recorded your compute node AMI, you may continue 
 to [Exercise 2](exercise2.html).**
 
 <details>
