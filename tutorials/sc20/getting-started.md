@@ -35,7 +35,7 @@ account credentials and log-in links. **While on this page, you should save the 
 to enter the AWS console.**
 
 At this stage, you will be presented with a clean, temporary AWS account into which you can deploy the templates from the tutorial. 
-Accounts deployed using EventEngine will be available for 48 hours from the start of the tutorial, after which point all accounts 
+Accounts deployed using EventEngine will be available for around 72 hours from the start of the tutorial, after which point all accounts 
 and their contents will be deleted.
 
 For the purposes of this tutorial, the EventEngine account will function similarly to a standard newly-created AWS account; 
