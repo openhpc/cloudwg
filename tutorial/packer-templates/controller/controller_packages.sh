@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 dnf -y update
 dnf -y config-manager --set-enabled PowerTools
 dnf -y install epel-release
@@ -34,6 +35,18 @@ pip3 install awscli
 dnf -y install zip multitail vim
 dnf -y install python3-mpi4py-gnu9-mpich-ohpc python3-mpi4py-gnu9-openmpi4-ohpc python3-numpy-gnu9-ohpc python3-scipy-gnu9-mpich-ohpc python3-scipy-gnu9-openmpi4-ohpc
 
+# grab podman and docker interface to run optional from scratch without docker locally
+dnf -y install podman-docker
+
+# increase S3 performance
+cat <<-EOF | install -D /dev/stdin /root/.aws/config
+[default]
+s3 =
+    max_concurrent_requests = 100
+    max_queue_size = 1000
+    multipart_threshold = 256MB
+    multipart_chunksize = 128MB
+EOF
 # prebake tutorial content
-/usr/local/bin/aws s3 cp s3://ohpc-sc20-tutorial/ContainersHPC.tar.gz - --no-sign-request | tar xz -C /home/centos
+/usr/local/bin/aws s3 cp s3://ohpc-sc20-tutorial/ContainersHPC-v2.tar.gz - --no-sign-request | tar xz -C /home/centos
 
