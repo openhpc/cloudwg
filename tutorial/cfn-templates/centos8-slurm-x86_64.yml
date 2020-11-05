@@ -5,7 +5,7 @@ Parameters:
 
   AllocateLoginNode:
     Description: Specify whether to create a login node
-    Default: TRUE
+    Default: FALSE
     Type: String
     AllowedValues:
       - TRUE
@@ -21,13 +21,13 @@ Parameters:
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-03b9a0c6bb3987e2d
+    Default: ami-0059a96f97fd8361c
 
 
   HeadInstanceType:
     Description: Instance type to be used for Slurm Headnode/Management Node.
     Type: String
-    Default: t3.micro
+    Default: t3.2xlarge
     AllowedValues:
       - t3.micro
       - t3.2xlarge
