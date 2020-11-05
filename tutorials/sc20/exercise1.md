@@ -48,7 +48,7 @@ $ export AWS_DEFAULT_REGION=us-east-1
 ~~~
 
 $ cd ~
-$ wget -c https://github.com/utdsimmons/sc2020/raw/master/ohpc-sc20-tutorial.tar.bz2 -O - | tar -xj
+$ wget -c https://github.com/utdsimmons/sc2020/raw/master/ohpc-sc20-tutorial.tar.gz -O - | tar -xz
 
 ~~~
 
