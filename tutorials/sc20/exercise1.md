@@ -43,6 +43,16 @@ $ export AWS_DEFAULT_REGION=us-east-1
 
 ~~~
 
+* If you are using an EventEngine account, also set your AWS_SESSION_TOKEN
+
+~~~
+
+$ export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEJ3//////////wEaCXVzLWVhc3QtMSJHMEUCIG7pNhU9MREozHRR8xccBiSyOe9uW1pNAbTONkCnxyQ4AiEA6jcpzZQD8gLN84+6Y/2fUIfmT7kbFZLEjvm0i6tYrL4qoAII9v//////////ARABGgw5MzAwMTcwNDE3ODMiDJNZVNzJsnTb23a3OSr0AebUmrjYXazdkzVLYCqDIsMfRsz8xMcysNpLteslZhe+5iUspmNcMGI9dDsCqTdy1cVoOyZRXjzAFTFlvTyjAi4QLGBFi04xInvzMAjIr5ZqGm+oVrvWxy0UU6v2fAaN0MH8QLchfL93Nrp7OF8Qmg5hZAsQE7FT0xtXvv96zjqzWAOtNELtz8zSl+41i0/1ev5SOJ1NQjrbS09ZEnfmL16aaelutVjHuK+1YrUi+Bo2crAru8PakJL6kR3+kOTniOG1Gl+EpUcyx70+k61kVM2f+6VRJ5ORiybtHUkknzit/YgVL3oIJ9d4CQv1YIa5wfgY3CgwkcyR/QU6nQElm5DSJRrbsRL/lt/lKIiOmlpDDT+JMCsPdifQP8yQr3D9hE1Kvv9GVpNALME79tiXH4IZZ8veMIddw9RCjl64v02Wm7BF/8+aYs3EWkAipJiVQpliBp416iY+aRAG1C8IG4UCB68+soouV5+HTjKyAPoZ2kJFcJnOfBIzrA+xAU8NAaw6FoiT+TyvzEnVGrdNvsLzEXAMPLETOKEN
+
+~~~
+
+*Note: You do not have to set the SESSION TOKEN if you are using a personal AWS account*
+
 * Download the tutorial content tarball and extract it.
 
 ~~~
