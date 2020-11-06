@@ -1,0 +1,3 @@
+Container a408704d3f3d was built from https://hub.docker.com/r/intelaipg/intel-optimized-tensorflow and manually configured
+following these steps, https://github.com/DavidBrayford/HPAI/blob/master/Documents/Recipes/CPU_Ubuntu_Intel_TensorFlow_MPICH
+
