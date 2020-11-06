@@ -315,10 +315,10 @@ Resources:
           exportfs -a
           systemctl restart nfs-server
           systemctl enable nfs-server
-          curl https://gist.githubusercontent.com/ChrisDowning/03289662b40ee102bcab64831c6a5ec9/raw/slurm.conf > /etc/slurm/slurm.conf
-          curl https://gist.githubusercontent.com/ChrisDowning/43226d1d4e25d02a721d7725965f6cb7/raw/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
-          curl https://gist.githubusercontent.com/ChrisDowning/0afbcd4c1a5aca992cedd7ccaaf568f0/raw/slurm-aws-shutdown.sh > /etc/slurm/slurm-aws-shutdown.sh
-          curl https://gist.githubusercontent.com/ChrisDowning/19e2fd13e905e3af84bedc61aebe5629/raw/slurm-compute-userdata.sh > /etc/slurm/slurm-compute-userdata.sh
+          curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm.conf > /etc/slurm/slurm.conf
+          curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
+          curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm-aws-shutdown.sh > /etc/slurm/slurm-aws-shutdown.sh
+          curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm-compute-userdata.sh > /etc/slurm/slurm-compute-userdata.sh
           sed -i "s|@COMPUTESG@|${ClusterSG}|g" /etc/slurm/slurm-aws-startup.sh
           sed -i "s|@SUBNETID@|${ClusterComputeSubnet}|g" /etc/slurm/slurm-aws-startup.sh
           sed -i "s|@COMPUTEAMI@|${ComputeAMI}|g" /etc/slurm/slurm-aws-startup.sh
