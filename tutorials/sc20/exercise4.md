@@ -28,10 +28,10 @@ Previously, we have given [other tutorials](https://docs.google.com/presentation
 that include discussion of [different virtualization and containerization tools including 
 Singularity](https://docs.google.com/presentation/d/1u-GRzaeSGTNb4Qnk_rjBLb9go5xmW3mirqmchyH2Wjg/edit#slide=id.g5dedef83a8_14_6).
 
-If you are attending this tutorial live, the containers are already available and ready to be used in /home/centos/ContainersHPC.
-Below (and live), we will demo the typical use case where Docker is installed on your personal laptop/desktop and you want to run 
-Docker images on an HPC system. 
-At the end of this exercise are instructions for building the tutorial content in userspace using podman.
+If you are attending this tutorial live, the containers are already available and ready to be used in $HOME/ContainersHPC.
+Below (and live), we will demo the typical use case where Docker is installed (and used for development)
+ on your personal laptop/desktop and you want to run Docker images on an HPC system. 
+At the end of this exercise are instructions for building the tutorial content in userspace using Podman.
 
 
 ## Working with containers (45 mins)
@@ -123,13 +123,13 @@ Now that we have ...
 
 We are ready to run our containers.
 
-*Note if you are attending this tutorial live, the containers are available in /home/centos/ContainersHPC*
+*Note if you are attending this tutorial live, the containers are available in $HOME/ContainersHPC*
 
 The first thing we will do is invoke a bash shell in our Charliecloud container.
 This is done via the `ch-run` command. 
 
 
-*Note the -w flag mounts image read-write (by default, the image is mounted read-only)*
+*Note the -w flag mounts the image read-write (by default, the image is mounted read-only)*
 
 
 
@@ -189,6 +189,8 @@ $ sbatch slurm_sc_tutorial_charliecloud.sh
 #### Mounting directory from host into container
 
 Using the `-b` flag, it is possible to mount directories from the host system directly into the container.
+This can be used to "augment" the container with files / binaries from the host system.
+
 
 ~~~
 
@@ -198,20 +200,27 @@ $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
 
 #### Set environment to docker environment
 
+The reverse is also possible. You can "augment" your bare metal user enviroment with the environment from the container.
+When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit that containers
+runtime environment.
+
 ~~~
-$echo $PATH
-ch-run -w ./oneapi_hpc_mod -- bash
 $ echo $PATH
-$ exit
-ch-run --set-env=./oneapi_hpc_mod/ch/environment -w ./oneapi_hpc_mod -- bash
-$ echo $PATG
+
+$ ch-run -w ./oneapi_hpc_mod -- bash
+
+$ echo $PATH
+
 $ exit
 
 $ ch-run --set-env=./oneapi_hpc_mod/ch/environment -w ./oneapi_hpc_mod -- bash
+$ echo $PATH
+$ exit
+
 
 ~~~
 
-8) Quantum computing simulator setup
+### Additional Exercise -- Quantum computing simulator setup
 
 ~~~
 
