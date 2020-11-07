@@ -10,3 +10,7 @@ nav_order: 5
 
 
 
+module stacks
+add charliecloud to default stack
+
+
