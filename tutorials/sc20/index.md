@@ -7,7 +7,7 @@ nav_exclude: false
 nav_order: 299
 ---
 
-## SC 2020 Tutorial
+## Supercomputing 2020 (SC20) Tutorial
 
 ---
 #### Practical OpenHPC: Cluster Management, HPC Applications, Containers and Cloud
