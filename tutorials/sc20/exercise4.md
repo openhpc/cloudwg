@@ -6,9 +6,43 @@ nav_order: 6
 ---
 
 # Exercise 4: OpenHPC and Containers
+
+In this exercise we will be working with containers. 
+[Containers](https://en.wikipedia.org/wiki/OS-level_virtualization) are an OS-level virtualization paradigm that allow multiple, isolated user environments to run concurrently.
+There are several different container technologies that address a variety of use cases and 
+due to the [Open Container Initiative](https://opencontainers.org/) (OCI), we can convert containers from one format to another.
+
+The first container technology that most people learn is [Docker](https://www.docker.com/).
+Docker is designed in such a way that the IAM model does not map well to HPC systems.
+That is, you must have escalated privledges (root) in order to use docker.
+Because of this, most HPC systems do not support Docker.
+
+There are multiple, alternative container technologies that allow users to run OCI/Docker containers in userspace without admin privledges.
+OpenHPC has support for [Singularity](https://sylabs.io/) and [Charliecloud](https://hpc.github.io/charliecloud/)
+and both RHEL/CentOS and SuSE have support for [Podman](https://podman.io/).
+
+In this exercise, we will take Docker containers, convert them to Charliecloud containers and then run them on our elastic OpenHPC cluster.
+Previously, we have given tutorials on the usage of Singularity and the 
+[slides are available](https://docs.google.com/presentation/d/1u-GRzaeSGTNb4Qnk_rjBLb9go5xmW3mirqmchyH2Wjg/edit)
+for additional, self-directed learning.
+
+If you are attending this tutorial live, the containers are already available and ready to be used in /home/centos/ContainersHPC.
+Below (and live), we will demo the typical use case where Docker is installed on your personal laptop/desktop and you want to run 
+Docker images on an HPC system. 
+At the end of this exercise are instructions for building the tutorial content in userspace using podman.
+
+
 ## Working with containers (45 mins)
 
-In Exercise 4, we introduce HPC containers, demonstrate how to deploy HPC containers on an OpenHPC cluster and describe "real world" use cases of containers in a production HPC environment.
+First, we will demonstrate the typical use case. 
+
+* End users develop with Docker on their personal machines
+* Dockerfiles are converted to gzip'd compressed charliecloud images
+* Images are transferred to our HPC system
+* Charliecloud compressed images are unpacked into a directory
+* SLURM jobs are submitted to run the Charliecloud workloads
+
+
 
 ### Build HPC containers from Dockerfiles
 
@@ -28,7 +62,7 @@ View the new Docker image in your local Docker repository:
 
 ~~~
 
-$ sudo docker build -t image_name .
+$ sudo docker image ls
 
 REPOSITORY                             TAG                IMAGE ID                  CREATED             SIZE
 image_name                            latest              02d6e22ec5ec              2 days ago         5.74GB
