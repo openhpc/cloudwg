@@ -17,14 +17,16 @@ Docker is designed in such a way that the IAM model does not map well to HPC sys
 That is, you must have escalated privledges (root) in order to use it.
 Because of this, most HPC systems do not support Docker.
 
-There are multiple, alternative container technologies that allow users to run Docker/OCI containers in userspace without admin privledges.
+However, there are multiple, alternative container technologies that allow users to run Docker/OCI containers 
+in userspace without admin privledges.
 OpenHPC has support for [Singularity](https://sylabs.io/) and [Charliecloud](https://hpc.github.io/charliecloud/)
-and both RHEL/CentOS and SuSE have support for [Podman](https://podman.io/).
+and both [RHEL](https://www.redhat.com/en)/[CentOS](https://www.centos.org/) and [SuSE](https://www.suse.com/)
+ have support for [Podman](https://podman.io/).
 
 In this exercise, we will take Docker containers, convert them to Charliecloud containers and then run them on our elastic OpenHPC cluster.
-Previously, we have given tutorials on the usage of Singularity and the 
-[slides are available](https://docs.google.com/presentation/d/1u-GRzaeSGTNb4Qnk_rjBLb9go5xmW3mirqmchyH2Wjg/edit)
-for additional, self-directed learning.
+Previously, we have given [other tutorials](https://docs.google.com/presentation/d/1u-GRzaeSGTNb4Qnk_rjBLb9go5xmW3mirqmchyH2Wjg/)
+that include discussion of [different virtualization and containerization tools including 
+Singularity](https://docs.google.com/presentation/d/1u-GRzaeSGTNb4Qnk_rjBLb9go5xmW3mirqmchyH2Wjg/edit#slide=id.g5dedef83a8_14_6).
 
 If you are attending this tutorial live, the containers are already available and ready to be used in /home/centos/ContainersHPC.
 Below (and live), we will demo the typical use case where Docker is installed on your personal laptop/desktop and you want to run 
@@ -83,21 +85,20 @@ $ sudo ch-builder2tar image /dir/to/save
 
 This creates the file */dir/to/save/image_name.tar.gz*
 
-##### Copy the tar.gz file to the hPC system
+##### Copy the tar.gz file to the HPC system
 
 ~~~
 
-$ scp -i .ssh/id_rsa -r ./image_name.tar.gz centos@ec2-54-177-114-95.us-west-1.compute.amazonaws.com:~
+$ scp -i .ssh/id_rsa -r image_name.tar.gz centos@ec2-54-177-114-95.us-west-1.compute.amazonaws.com:
 
 ~~~
 
 #### On the HPC system (hands on) ####
 
-##### Load the required modules
+##### Load the charliecloud module
 
 ~~~
 
-$ module load mpich
 $ module load charliecloud
 
 ~~~
