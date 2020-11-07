@@ -315,6 +315,8 @@ Resources:
           exportfs -a
           systemctl restart nfs-server
           systemctl enable nfs-server
+          su - centos -c "ssh-keygen -q -t rsa -N '' <<< ""$'\n'"y" 2>&1 >/dev/null"
+          su - centos -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
           curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm.conf > /etc/slurm/slurm.conf
           curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm-aws-startup.sh > /etc/slurm/slurm-aws-startup.sh
           curl https://raw.githubusercontent.com/utdsimmons/sc2020/master/conf/slurm-aws-shutdown.sh > /etc/slurm/slurm-aws-shutdown.sh
@@ -365,8 +367,6 @@ Resources:
           echo "192.168.0.100:/home /home nfs nfsvers=3,nodev,nosuid 0 0" >> /etc/fstab
           echo "192.168.0.100:/opt/ohpc/pub /opt/ohpc/pub nfs nfsvers=3,nodev 0 0" >> /etc/fstab
           mount -a
-          su - centos -c "ssh-keygen -q -t rsa -N '' <<< ""$'\n'"y" 2>&1 >/dev/null"
-          su - centos -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
           cp /home/.slurmconf /etc/slurm/slurm.conf
           cp /home/.munge /etc/munge/munge.key
           chown munge:munge /etc/munge/munge.key

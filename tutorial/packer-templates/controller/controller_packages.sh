@@ -48,5 +48,5 @@ s3 =
     multipart_chunksize = 128MB
 EOF
 # prebake tutorial content
-/usr/local/bin/aws s3 cp s3://ohpc-sc20-tutorial/ContainersHPC-v3.tar.gz - --no-sign-request | tar xz -C /home/centos
+/usr/local/bin/aws s3 cp s3://ohpc-sc20-tutorial/ContainersHPC-v4.tar.gz - --no-sign-request | tar xz -C /home/centos
 
