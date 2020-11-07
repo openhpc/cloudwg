@@ -6,9 +6,7 @@ RUN wget \
     https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
     && bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda \
     && rm -f Miniconda3-latest-Linux-x86_64.sh \
-    && echo PATH="/opt/conda/bin":$PATH >> /etc/bash.bashrc \
-    && exec bash \
-    && conda --version
+    && echo PATH="/opt/conda/bin":$PATH >> /etc/bash.bashrc
 
 ENV PYTHON /opt/conda
 
@@ -22,7 +20,7 @@ RUN julia --project=. -e 'using Pkg; Pkg.instantiate();'
 
 RUN julia --project=. -e 'using Pkg; Pkg.build("PicoQuant");'
 
-COPY qft_example.jl /PicoQuant
+#COPY qft_example.jl /PicoQuant
 
 # run tests to verify they are working and to precompile
 RUN julia --project=. test/runtests.jl
