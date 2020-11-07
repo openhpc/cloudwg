@@ -21,7 +21,7 @@ Parameters:
   HeadAMI:
     Description: AMI to use for head node.
     Type: String
-    Default: ami-0d0360ace6f1b1dc6
+    Default: ami-0d9dd07156b2e9af7
 
 
   HeadInstanceType:
