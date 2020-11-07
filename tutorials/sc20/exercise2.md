@@ -29,10 +29,8 @@ Now, we are going to deploy the cloud formation template that will setup our clu
 But first, we need to update the template to include the AMIs we just built. The text editor `vi` is available by default.
 Other text editors may be installed.
 
-~~~
-
+~~~console
 $ sudo dnf -y install emacs nano vim
-
 ~~~
 
 
@@ -42,20 +40,17 @@ you just generated with packer in Exercise 1.
 
 *Note: AMI IDs are available via the EC2 dasboard: Console > Services > EC2 > Images/AMIs*
 
-~~~
-
+~~~console
 $ cd ~/SC20/cfn-templates
 $ vim centos8-slurm-x86_64.yml
-
 ~~~
 
 Once you populate the AMI entries in the CloudFormation template, you are ready to deploy.
 
 ### Deploying the cluster with Cloud Formation
-~~~
 
+~~~console
 $ aws cloudformation deploy --template-file centos8-slurm-x86_64.yml --capabilities CAPABILITY_IAM --stack-name sc20-1 --region us-east-1
-
 ~~~
 
 You can monitor the status of the deployment with the CloudFormation dashboard.
@@ -81,39 +76,33 @@ First, we need to get the hostname of our login node from the EC2 console:
 
 Now using your downloaded SSH private key and our login node host information, we can access our login node.
 
-~~~
+~~~console
 $ cp ~/Downloads/cluster-sc20.pem .
 $ chmod 400 cluster-sc20.pem
 $ ssh -i "cluster-sc20.pem" centos@ec2-xx-xxx-x-xxx.us-xxxx-x.compute.amazonaws.com
-
 ~~~
 
 ### Testing our cluster
 
 And finally, we can submit a test job:
 
-~~~
-
+~~~console
 $ cp /opt/ohpc/pub/examples/mpi/hello.c .
 $ mpicc hello.c
 $ cp /opt/ohpc/pub/examples/slurm/job.mpi .
 $ sbatch job.mpi
-
 ~~~
 
 and monitor the job with watch
 
-~~~
-
+~~~console
 $ watch -n 5 squeue
-
 ~~~
 
 Once the job is done, we can check the output to make sure everything worked correctly.
 
 
-~~~
-
+~~~console
 [centos@ip-192-168-0-200 ~]$ cat job.2.out 
 [prun] Master compute host = ip-192-168-1-101
 [prun] Resource manager = slurm
@@ -137,7 +126,6 @@ Once the job is done, we can check the output to make sure everything worked cor
     --> Process #   2 of  16 is alive. -> ip-192-168-1-101.us-east-1.compute.internal
     --> Process #   3 of  16 is alive. -> ip-192-168-1-101.us-east-1.compute.internal
 [centos@ip-192-168-0-200 ~]$ 
-
 ~~~
 
 **If you get messages about "waiting for resources", just be patient. :)**

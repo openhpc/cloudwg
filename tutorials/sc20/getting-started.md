@@ -86,13 +86,11 @@ Note that this IAM user account has effectively unrestricted access to create/de
 * Once the status checks pass, right click the instance > Connect > SSH client > copy Public DNS
 * Connect to instance using your packer-SC20.pem SSH key
 
-~~~
-
+```console
 $ cp ~/Downloads/packer-sc20.pem .
 $ chmod 400 packer-sc20.pem
 $ ssh -i "packer-sc20.pem" centos@ec2-xx-xxx-x-xxx.us-xxxx-x.compute.amazonaws.com
-
-~~~
+```
 
 
 Once connected to the EC2 instance, install the aws cli client.
@@ -100,7 +98,7 @@ Once connected to the EC2 instance, install the aws cli client.
 You will need to set these API keys each time you log in to this instance.
 
 
-~~~
+~~~console
 
 $ sudo dnf -y install python36 wget zip
 $ pip3 install --user awscli
@@ -109,7 +107,7 @@ $ pip3 install --user awscli
 
 Finally, we need to download and install [Packer](https://www.packer.io/) from [Hashicorp](https://www.hashicorp.com/). Packer is a CLI tool which automates the creation of Amazon Machine Images (AMIs) using a simple config file. An AMI is effectively a golden image, containing a set of user-defined packages and configuration changes applied on top of a base image (usually provided by AWS or the OS provider).
 
-~~~
+~~~console
 
 $ mkdir ~/bin && cd ~/bin
 $ wget https://releases.hashicorp.com/packer/1.6.0/packer_1.6.0_linux_amd64.zip 
