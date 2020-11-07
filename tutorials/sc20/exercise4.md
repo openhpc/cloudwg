@@ -14,10 +14,10 @@ due to the [Open Container Initiative](https://opencontainers.org/) (OCI), we ca
 
 The first container technology that most people learn is [Docker](https://www.docker.com/).
 Docker is designed in such a way that the IAM model does not map well to HPC systems.
-That is, you must have escalated privledges (root) in order to use docker.
+That is, you must have escalated privledges (root) in order to use it.
 Because of this, most HPC systems do not support Docker.
 
-There are multiple, alternative container technologies that allow users to run OCI/Docker containers in userspace without admin privledges.
+There are multiple, alternative container technologies that allow users to run Docker/OCI containers in userspace without admin privledges.
 OpenHPC has support for [Singularity](https://sylabs.io/) and [Charliecloud](https://hpc.github.io/charliecloud/)
 and both RHEL/CentOS and SuSE have support for [Podman](https://podman.io/).
 
@@ -48,9 +48,9 @@ First, we will demonstrate the typical use case.
 
 #### On the Desktop or laptop (demonstrated) ####
 
-1) Build docker image from Dockerfile
+##### Build docker image from Dockerfile
 
-In the deirectory where the Dockerfile is located, execute the following command:
+In the directory where the Dockerfile is located, execute the following command:
 
 ~~~
 
@@ -73,7 +73,7 @@ debian                                stretch             de8b49d4b0b3          
 
 ~~~
 
-2) Convert docker image to charliecloud on desktop
+##### Convert docker image to charliecloud on desktop
 
 ~~~
 
@@ -83,7 +83,7 @@ $ sudo ch-builder2tar image /dir/to/save
 
 This creates the file */dir/to/save/image_name.tar.gz*
 
-4) Copy the tar.gz file to the hPC system
+##### Copy the tar.gz file to the hPC system
 
 ~~~
 
@@ -93,7 +93,7 @@ $ scp -i .ssh/id_rsa -r ./image_name.tar.gz centos@ec2-54-177-114-95.us-west-1.c
 
 #### On the HPC system (hands on) ####
 
-5) Load the required modules
+##### Load the required modules
 
 ~~~
 
@@ -102,7 +102,7 @@ $ module load charliecloud
 
 ~~~
 
-6) Unpack charliecloud archive on OHPC cloud
+##### Unpack charliecloud archive on OHPC cloud
 
 ~~~
 
@@ -114,7 +114,25 @@ $ ch-tar2dir pico_quant.tar.gz .
 
 ### Simple container execution
 
-1) Start a bash in the container
+Now that we have ...
+* built our docker containers from a Dockerfile
+* converted it to a gzip'd charliecloud image
+* transfered it to our cluster
+* and unpacked our charliecloud image
+
+We are ready to run our containers.
+
+*Note if you are attending this tutorial live, the containers are available in /home/centos/ContainersHPC*
+
+The first thing we will do is invoke a bash shell in our Charliecloud container.
+This is done via the `ch-run` command. 
+
+
+*Note the -w flag mounts image read-write (by default, the image is mounted read-only)*
+
+
+
+#### Start a bash shell in the container
 
 ~~~
 
@@ -124,15 +142,18 @@ $ exit
 
 ~~~
 
-2) Compile "hello world" mpi C program
+#### Compile "hello world" mpi C program
+
+Next, we will compile an MPI hello world program that is inside the container using the container compiler and MPI stacks.
+~~~
+
+$ ch-run -w a408704d3f3d -- mpicc -g -O3 -o /MPI_TEST/HelloWorld/mpi_hello_world /MPI_TEST/HelloWorld/mpi_hello_world.c
 
 ~~~
 
-$ ch-run -w a408704d3f3d -- mpicc -g -O3 -o /MPI_TEST/HelloWorld/mpi_hello_world /MPI_TEST/HelloWorld/mpi_hello_worl                                           d.c
+#### Execute MPI "hello world"
 
-~~~
-
-3) Execute MPI "hello world"
+And now, we can run the freshly compiled mpi hello world example.
 
 ~~~
 
@@ -140,7 +161,13 @@ $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- /MPI_TEST/HelloWorld/mpi_hello_world
 
 ~~~
 
-4) Execute distributed TensorFlow horovod (print out horovod ranks)
+### TensorFlow example
+
+Now that we've looked at a simple example, let's use the same container to run [Horovod](https://eng.uber.com/horovod/).
+Horovod is Uber's open source deep learning framework on top of [TensorFlow](https://eng.uber.com/horovod/).
+
+
+#### Run distributed TensorFlow horovod interactively (print out horovod ranks)
 
 ~~~
 
@@ -148,8 +175,19 @@ $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- python /MPI_TEST/Horovod/simple_mpi.
 
 ~~~
 
+#### Run distributed TensorFlow example on our elastic cluster via Slurm 
 
-5) Mounting host directory /opt/ohpc in container
+~~~
+
+$ sbatch slurm_sc_tutorial_charliecloud.sh
+
+~~~
+
+### Other features of Charliecloud
+
+#### Mounting directory from host into container
+
+Using the `-b` flag, it is possible to mount directories from the host system directly into the container.
 
 ~~~
 
@@ -157,7 +195,7 @@ $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
 
 ~~~
 
-6) Set environment to docker environment
+#### Set environment to docker environment
 
 ~~~
 $echo $PATH
@@ -169,14 +207,6 @@ $ echo $PATG
 $ exit
 
 $ ch-run --set-env=./oneapi_hpc_mod/ch/environment -w ./oneapi_hpc_mod -- bash
-
-~~~
-
-7) execute distributed TensorFlow example using mpiexec/mpirun via Slurm (need to start execution early due to time)
-
-~~~
-
-$ sbatch slurm_sc_tutorial_charliecloud.sh
 
 ~~~
 
@@ -207,3 +237,6 @@ $ exit
 5) Keep your container as small as possible. As creating the container is done on your laptop or desktop.
 
 6) Use the HPC module system inside the container if possible for optimized, tested and/or licenced software.
+
+
+### Building and Converting Dockerfiles in Userspace
