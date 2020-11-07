@@ -174,15 +174,13 @@ $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- python /MPI_TEST/Horovod/simple_mpi.
 #SBATCH --error="error_charliecloud_horovod_sc_tutorial_mpich_test.txt"
 #SBATCH --time=00:30:00
 #SBATCH -N 2 # Request two nodes
-#SBATCH -n 2 # Request 2 cores; each MPI task per node
+#SBATCH -n 2 # Request 2 cores; one MPI task per node
 
 #load charliecloud module
 module load charliecloud
 
 #tensorflow cpu best practice from:
-#https://software.intel.com/content/www/us/en/develop/articles/maximize-tensorflow-performance-on-cpu-considerations-and-recommendations-for-i
-nference.html
-
+#https://software.intel.com/content/www/us/en/develop/articles/maximize-tensorflow-performance-on-cpu-considerations-and-recommendations-for-inference.html
 #Recommended settings for CNN → OMP_NUM_THREADS = num physical cores
 export OMP_NUM_THREADS=8
 
@@ -288,13 +286,18 @@ Log out and log back in in order to have lmod configured.
 
 ```console
 $ ml load charliecloud
-$ ch-build -t myoneapi -f Dockerfile_oneAPI_mod
+$ podman build -t myoneapi -f Dockerfile_oneAPI_mod
 $ ch-builder2tar myoneapi .
 ```
 
 ```console
-$ ch-build -t mypq -f Dockerfile_PicoQuant
-$ ch-builder2tar mypq .
+$ podman build -t pico_quant -f Dockerfile_PicoQuant
+$ ch-builder2tar pico_quant .
 ```
 
-From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system and extract them with `ch-tar2dir image.tar.gz .`.
+From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system and extract them.
+
+~~~console
+$ ch-tar2dir image.tar.gz .
+~~~
+
