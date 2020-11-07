@@ -201,9 +201,8 @@ $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
 
 #### Set environment to docker environment
 
-The reverse is also possible. You can "augment" your bare metal user enviroment with the environment from the container.
-When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit that containers
-runtime environment.
+When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit the environment 
+specified by the builder (Docker).
 
 ~~~
 $ echo $PATH
