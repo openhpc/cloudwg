@@ -124,14 +124,14 @@ Now that we have ...
 
 We are ready to run our containers. Also, note if you are attending this tutorial live, the containers are available in $HOME/ContainersHPC.
 
-***Caution: if you didn't previously, you'll need to `ml load charliecloud` before proceeding.***
 
 The first thing we will do is invoke a bash shell in our Charliecloud container.
 This is done via the `ch-run` command. 
 
 
-*Note the -w flag mounts the image read-write (by default, the image is mounted read-only)*
+*Note: the -w flag mounts the image read-write (by default, the image is mounted read-only)*
 
+***If you didn't previously, you'll need to `ml load charliecloud` before proceeding.***
 
 
 #### Start a bash shell in the container
