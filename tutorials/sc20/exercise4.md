@@ -121,9 +121,11 @@ Now that we have ...
 * transfered it to our cluster
 * and unpacked our charliecloud image
 
-We are ready to run our containers.
 
-*Note if you are attending this tutorial live, the containers are available in $HOME/ContainersHPC*
+***Caution: if you didn't previously, you'll need to `ml load charliecloud` before proceeding.***
+
+
+We are ready to run our containers. Also, note if you are attending this tutorial live, the containers are available in $HOME/ContainersHPC.
 
 The first thing we will do is invoke a bash shell in our Charliecloud container.
 This is done via the `ch-run` command. 
