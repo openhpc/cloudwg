@@ -224,19 +224,48 @@ $ exit
 
 ~~~
 
+That concludes Exercise 4 and the tutorial. 
+Below are the instructions to generate the Charliecloud image directories that you just used.
+
 ### Gotchas, tips and "real world" examples
 
-1) In your dockerfile avoid building your application and copying/storing your data in /home, as when executing the Charliecloud container the users /home directory will map to the containers /home directory and you will not be able to access the data the dockerfile build placed in /home.
+* In your dockerfile avoid building your application and copying/storing your data in /home, as when executing the Charliecloud container the users /home directory will map to the containers /home directory and you will not be able to access the data the dockerfile build placed in /home.
 
-2) Mount your data directory such as $SCRATCH and/or $WORK in the container to avoid storing your data in the container.
+* Mount your data directory such as $SCRATCH and/or $WORK in the container to avoid storing your data in the container.
 
-3) Use the system MPI environment (via mounting) when executing on a production HPC system.
+* Use the system MPI environment (via mounting) when executing on a production HPC system.
 
-4) Install the software/drivers of the high performance interconnects inside the container. the transport layer can default to TCP instead of using the high performance network.
+* Install the software/drivers of the high performance interconnects inside the container. 
+The transport layer can default to TCP instead of using the high performance network.
 
-5) Keep your container as small as possible. As creating the container is done on your laptop or desktop.
+* Keep your container as small as possible. As creating the container is done on your laptop or desktop.
 
-6) Use the HPC module system inside the container if possible for optimized, tested and/or licenced software.
+* Use the HPC module system inside the container if possible for optimized, tested and/or licensed software.
 
 
-### Building and Converting Dockerfiles in Userspace
+### Appendix: Building and Converting Dockerfiles in Userspace
+
+If you'd like to build containers from Dockerfiles or on Docker/OCI container registeries and don't have access to a system with Docker
+or you want to build them directly on an HPC system, you can use Podman (if it's installed on your HPC system).
+
+Podman is a daemonless Docker/OCI container runtime that can run without escalated privledges.
+More info on Podman is available on [their whatis page](https://podman.io/whatis.html).
+
+In this exercise, you were provided with Charliecloud image directories. 
+These directories were built from Dockerfiles that were provided as part of the tarball from Exercise 1.
+These Dockerfiles are available in the ~/SC20/Dockerfiles directory on your "bastion"/manually launched EC2 instance.
+
+~~~
+$ cd ~/SC20/Dockerfiles
+$ ml load charliecloud
+$ ch-build -t myoneapi -f Dockerfile_oneAPI_mod
+$ ch-builder2tar myoneapi .
+
+~~~
+
+~~~
+$ ch-build -t mypq -f Dockerfile_PicoQuant
+$ ch-builder2tar mypq .
+~~~
+
+From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system and extract them with `ch-tar2dir image.tar.gz .`.
