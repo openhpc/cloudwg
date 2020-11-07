@@ -54,15 +54,17 @@ First, we will demonstrate the typical use case.
 
 In the directory where the Dockerfile is located, execute the following command:
 
-~~~
+
+```console
 
 $ sudo docker build -t image_name .
 
-~~~
+```
 
 View the new Docker image in your local Docker repository:
 
-~~~
+```console
+
 
 $ sudo docker image ls
 
@@ -73,44 +75,37 @@ ubuntu                                16.04               7e87e2b3bf7a          
 hello-world                           latest              fce289e99eb9              8 months ago        1.84kB
 debian                                stretch             de8b49d4b0b3              8 months ago        101MB
 
-~~~
+```
 
 ##### Convert docker image to charliecloud on desktop
 
-~~~
-
+```console
 $ sudo ch-builder2tar image /dir/to/save
-
-~~~
+```
 
 This creates the file */dir/to/save/image_name.tar.gz*
 
 ##### Copy the tar.gz file to the HPC system
 
-~~~
 
+```console
 $ scp -i .ssh/id_rsa -r image_name.tar.gz centos@ec2-54-177-114-95.us-west-1.compute.amazonaws.com:
-
-~~~
+```
 
 #### On the HPC system (hands on) ####
 
 ##### Load the charliecloud module
 
-~~~
-
+```console
 $ module load charliecloud
-
-~~~
+```
 
 ##### Unpack charliecloud archive on OHPC cloud
 
-~~~
-
+```console
 $ cd /home/centos/ContainersHPC
 $ ch-tar2dir pico_quant.tar.gz .
-
-~~~
+```
 
 *Note if you're attending this event live, the containers are already unpacked and ready to be used*
 
@@ -136,32 +131,27 @@ This is done via the `ch-run` command.
 
 #### Start a bash shell in the container
 
-~~~
-
+```console
 $ ch-run -w ./a408704d3f3d/ -- bash
 $ ls
 $ exit
-
-~~~
+```
 
 #### Compile "hello world" mpi C program
 
 Next, we will compile an MPI hello world program that is inside the container using the container compiler and MPI stacks.
-~~~
 
+```console
 $ ch-run -w a408704d3f3d -- mpicc -g -O3 -o /MPI_TEST/HelloWorld/mpi_hello_world /MPI_TEST/HelloWorld/mpi_hello_world.c
-
-~~~
+```
 
 #### Execute MPI "hello world"
 
 And now, we can run the freshly compiled mpi hello world example.
 
-~~~
-
+```console
 $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- /MPI_TEST/HelloWorld/mpi_hello_world
-
-~~~
+```
 
 ### TensorFlow example
 
@@ -171,19 +161,49 @@ Horovod is Uber's open source deep learning framework on top of [TensorFlow](htt
 
 #### Run distributed TensorFlow horovod interactively (print out horovod ranks)
 
-~~~
-
+```console
 $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- python /MPI_TEST/Horovod/simple_mpi.py
-
-~~~
+```
 
 #### Run distributed TensorFlow example on our elastic cluster via Slurm 
 
-~~~
+```console
+#!/bin/bash
+#SBATCH --job-name="charliecloud_sc_tutorial_mpich_test"
+#SBATCH --output="output_charliecloud_horovod_sc_tutorial_mpich_test.txt"
+#SBATCH --error="error_charliecloud_horovod_sc_tutorial_mpich_test.txt"
+#SBATCH --time=00:30:00
+#SBATCH -N 2 # Request two nodes
+#SBATCH -n 2 # Request 2 cores; each MPI task per node
 
+#load charliecloud module
+module load charliecloud
+
+#tensorflow cpu best practice from:
+#https://software.intel.com/content/www/us/en/develop/articles/maximize-tensorflow-performance-on-cpu-considerations-and-recommendations-for-i
+nference.html
+
+#Recommended settings for CNN → OMP_NUM_THREADS = num physical cores
+export OMP_NUM_THREADS=8
+
+#Recommended affinity setting for systems with hyperthreading on (can confirm with $ cat /proc/cpuinfo  | grep ht)
+export KMP_AFFINITY=granularity=fine,verbose,compact,1,0
+
+#Recommended settings (RTI) → intra_op_parallelism = # physical cores
+#Recommended settings → inter_op_parallelism = 2
+#Recommended settings → data_format = NCHW
+#Recommended settings for CNN → KMP_BLOCKTIME=0
+
+time prun ch-run -w /home/centos/ContainersHPC/a408704d3f3d --  python /tensorflow/benchmarks/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py -
+-model alexnet --batch_size 128 --data_format NCHW --num_batches 100 --distortions=False --mkl=True --local_parameter_device cpu --num_warmup_
+batches 10 --optimizer rmsprop --display_every 10 --variable_update horovod --horovod_device cpu --num_intra_threads 8 --kmp_blocktime 0 --num
+_inter_threads 2
+
+```
+
+```console
 $ sbatch slurm_sc_tutorial_charliecloud.sh
-
-~~~
+```
 
 ### Other features of Charliecloud
 
@@ -193,18 +213,16 @@ Using the `-b` flag, it is possible to mount directories from the host system di
 This can be used to "augment" the container with files / binaries from the host system.
 
 
-~~~
-
+```console
 $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
-
-~~~
+```
 
 #### Set environment to docker environment
 
 When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit the environment 
 specified by the builder (Docker).
 
-~~~
+```console
 $ echo $PATH
 
 $ ch-run -w ./oneapi_hpc_mod -- bash
@@ -216,14 +234,11 @@ $ exit
 $ ch-run --set-env=./oneapi_hpc_mod/ch/environment -w ./oneapi_hpc_mod -- bash
 $ echo $PATH
 $ exit
-
-
-~~~
+```
 
 ### Additional Exercise -- Quantum computing simulator setup
 
-~~~
-
+```console
 $ ch-run --set-env=./pico_quant/ch/environment -w ./pico_quant -- bash
 $ julia
 $ using Pkg
@@ -231,8 +246,7 @@ $ Pkg.add("PicoQuant")
 $ Pkg.activate("/PicoQuant")
 $ Pkg.test("PicoQuant")
 $ exit
-
-~~~
+```
 
 That concludes Exercise 4 and the tutorial. 
 Below are the instructions to generate the Charliecloud image directories that you just used.
@@ -265,17 +279,22 @@ In this exercise, you were provided with Charliecloud image directories.
 These directories were built from Dockerfiles that were provided as part of the tarball from Exercise 1.
 These Dockerfiles are available in the ~/SC20/Dockerfiles directory on your "bastion"/manually launched EC2 instance.
 
-~~~
+```console
 $ cd ~/SC20/Dockerfiles
+$ sh install.sh
+```
+
+Log out and log back in in order to have lmod configured.
+
+```console
 $ ml load charliecloud
 $ ch-build -t myoneapi -f Dockerfile_oneAPI_mod
 $ ch-builder2tar myoneapi .
+```
 
-~~~
-
-~~~
+```console
 $ ch-build -t mypq -f Dockerfile_PicoQuant
 $ ch-builder2tar mypq .
-~~~
+```
 
 From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system and extract them with `ch-tar2dir image.tar.gz .`.
