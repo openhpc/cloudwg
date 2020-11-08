@@ -214,6 +214,8 @@ This can be used to "augment" the container with files / binaries from the host 
 
 ```console
 $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
+$ ls /opt/ohpc
+$ exit
 ```
 
 #### Set environment to docker environment

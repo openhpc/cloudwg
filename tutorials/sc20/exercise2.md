@@ -64,8 +64,8 @@ If everything worked correctly, you'll now be able to SSH into your login node u
 user account. 
 You can identify the controller and login instances (and their DNS names or IP addresses) by accessing the EC2 page of your AWS console.
 
-After the CloudFormation deployment command returns successfully, allow a few minutes for the NFS mount and Slurm configuration to 
-complete before connecting via SSH.
+After the CloudFormation deployment command returns successfully, allow a few minutes for the the Slurm configuration to 
+complete before submitting jobs.
 
 ### Accessing our cluster login node
 
