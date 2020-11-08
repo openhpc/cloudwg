@@ -42,7 +42,7 @@ First, we will demonstrate the typical use case.
 * Dockerfiles are converted to gzip'd compressed charliecloud images
 * Images are transferred to our HPC system
 * Charliecloud compressed images are unpacked into a directory
-* SLURM jobs are submitted to run the Charliecloud workloads
+* [Charliecloud containers are run on the cluster](http://0.0.0.0:4000/tutorials/sc20/exercise4.html#simple-container-execution-live-tutorial-users-start-here) (Live tutorial users start here)
 
 
 
@@ -109,7 +109,7 @@ $ ch-tar2dir pico_quant.tar.gz .
 
 *Note if you're attending this event live, the containers are already unpacked and ready to be used*
 
-### Simple container execution
+### Simple container execution (Live tutorial users start here)
 
 Now that we have ...
 * built our docker containers from a Dockerfile
@@ -168,6 +168,10 @@ $ mpiexec -n 2 ch-run -w ./a408704d3f3d/ -- python /MPI_TEST/Horovod/simple_mpi.
 #### Run distributed TensorFlow example on our elastic cluster via Slurm 
 
 ```console
+$ sbatch slurm_sc_tutorial_charliecloud.sh
+```
+
+```console
 #!/bin/bash
 #SBATCH --job-name="charliecloud_sc_tutorial_mpich_test"
 #SBATCH --output="output_charliecloud_horovod_sc_tutorial_mpich_test.txt"
@@ -199,9 +203,6 @@ _inter_threads 2
 
 ```
 
-```console
-$ sbatch slurm_sc_tutorial_charliecloud.sh
-```
 
 ### Other features of Charliecloud
 
@@ -220,17 +221,39 @@ $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
 When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit the environment 
 specified by the builder (Docker).
 
+Default OHPC paths based on loaded modules.
+
 ~~~console
 $ echo $PATH
+/opt/ohpc/pub/libs/charliecloud/0.15/bin:/home/centos/.local/bin:/home/centos/bin:/opt/ohpc/pub/mpi/libfabric/1.10.1/bin:/opt/ohpc/pub/mpi/mpi
+ch-ofi-gnu9-ohpc/3.3.2/bin:/opt/ohpc/pub/compiler/gcc/9.3.0/bin:/opt/ohpc/pub/utils/prun/2.0:/opt/ohpc/pub/utils/autotools/bin:/opt/ohpc/pub/b
+in:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+~~~
 
+Simply starting a container does not set your PATH to the same as the container build environment.
+~~~console
 $ ch-run -w ./intel-oneapi -- bash
-
 $ echo $PATH
-
+/home/centos/.local/bin:/home/centos/bin:/opt/ohpc/pub/libs/charliecloud/0.15/bin:/home/centos/.local/bin:/home/centos/bin:/opt/ohpc/pub/mpi/l
+ibfabric/1.10.1/bin:/opt/ohpc/pub/mpi/mpich-ofi-gnu9-ohpc/3.3.2/bin:/opt/ohpc/pub/compiler/gcc/9.3.0/bin:/opt/ohpc/pub/utils/prun/2.0:/opt/ohp
+c/pub/utils/autotools/bin:/opt/ohpc/pub/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/bin
 $ exit
+~~~
 
+However, you can use the --set-env option to modify your environment upon starting the container and if you use $IMAGE/ch/environment,
+it will be your original builder (Docker) runtime environment.
+
+~~~console
 $ ch-run --set-env=./intel-oneapi/ch/environment -w ./intel-oneapi -- bash
 $ echo $PATH
+/home/centos/.local/bin:/home/centos/bin:/opt/intel/oneapi/inspector/2021.1-beta10/bin64:/opt/intel/oneapi/itac/2021.1-beta10/bin:/opt/intel/o
+neapi/itac/2021.1-beta10/bin:/opt/intel/oneapi/clck/2021.1-beta10/bin/intel64:/opt/intel/oneapi/debugger/10.0-beta10/gdb/intel64/bin:/opt/inte
+l/oneapi/dev-utilities/2021.1-beta10/bin:/opt/intel/oneapi/intelpython/latest/bin:/opt/intel/oneapi/intelpython/latest/condabin:/opt/intel/one
+api/mpi/2021.1-beta10/libfabric/bin:/opt/intel/oneapi/mpi/2021.1-beta10/bin:/opt/intel/oneapi/vtune/2021.1-beta10/bin64:/opt/intel/oneapi/mkl/
+2021.1-beta10/bin/intel64:/opt/intel/oneapi/compiler/2021.1-beta10/linux/lib/oclfpga/llvm/aocl-bin:/opt/intel/oneapi/compiler/2021.1-beta10/li
+nux/lib/oclfpga/bin:/opt/intel/oneapi/compiler/2021.1-beta10/linux/bin/intel64:/opt/intel/oneapi/compiler/2021.1-beta10/linux/bin:/opt/intel/o
+neapi/compiler/2021.1-beta10/linux/ioc/bin:/opt/intel/oneapi/advisor/2021.1-beta10/bin64:/opt/intel/oneapi/vpl/2021.1-beta10/bin:/usr/local/sb
+in:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 $ exit
 ~~~
 
@@ -282,7 +305,7 @@ $ cd ~/SC20/Dockerfiles
 $ sh install-deps.sh
 ```
 
-Log out and log back in to setup lmod in your environment.
+Log out and log back in (or run `bash -l`) to setup lmod in your environment.
 
 ```console
 $ ml load charliecloud
@@ -291,11 +314,11 @@ $ ch-builder2tar myoneapi .
 ```
 
 ```console
-$ podman build -t pico_quant -f Dockerfile_PicoQuant
-$ ch-builder2tar pico_quant .
+$ podman build -t mypq -f Dockerfile_PicoQuant
+$ ch-builder2tar mypq .
 ```
 
-From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system and extract them.
+From here, you can transfer your gzip'd charliecloud image tarballs to your HPC system, extract them, and run them.
 
 ~~~console
 $ ch-tar2dir image.tar.gz .

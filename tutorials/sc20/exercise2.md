@@ -47,6 +47,7 @@ $ vim centos8-slurm-x86_64.yml
 
 Once you populate the AMI entries in the CloudFormation template, you are ready to deploy.
 
+
 ### Deploying the cluster with Cloud Formation
 
 ~~~console
@@ -97,6 +98,22 @@ and monitor the job with watch
 
 ~~~console
 $ watch -n 5 squeue
+~~~
+
+
+##### job.mpi
+~~~bash
+#!/bin/bash
+
+#SBATCH -J test               # Job name
+#SBATCH -o job.%j.out         # Name of stdout output file (%j expands to jobId)
+#SBATCH -N 2                  # Total number of nodes requested
+#SBATCH -n 16                 # Total number of mpi tasks requested
+#SBATCH -t 01:30:00           # Run time (hh:mm:ss) - 1.5 hours
+
+# Launch MPI-based executable
+
+prun ./a.out
 ~~~
 
 Once the job is done, we can check the output to make sure everything worked correctly.

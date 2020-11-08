@@ -77,6 +77,57 @@ $ packer build compute.yml
 
 *Note: The AMI hash is returned to standard output as the last line of the `packer build` command. It is also available from the EC2 console: Services -> EC2 -> AMIs*
 
+##### compute.yaml
+~~~yaml
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+{% raw %}    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}", {% endraw %}
+    "instance_type": "t3.micro",
+    "region": "us-east-1",
+    "source_ami": "ami-01ca03df4a6012157",
+    "ssh_username": "centos",
+    "ami_name": "openhpc-compute-{{timestamp}}",
+    "launch_block_device_mappings": [
+    { 
+      "device_name": "/dev/sda1",
+      "volume_size": 10,
+      "volume_type": "gp2",
+      "delete_on_termination": true
+    }]
+  }],
+
+  "provisioners": [{
+    "type": "shell",
+    "script": "compute_packages.sh",
+{% raw %}    "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}" {% endraw %}
+  }]
+}
+~~~
+
+##### compute_packages.sh
+~~~bash
+#!/bin/bash
+
+dnf -y update
+dnf -y config-manager --set-enabled PowerTools
+dnf -y install epel-release
+dnf -y install http://repos.openhpc.community/OpenHPC/2/CentOS_8/x86_64/ohpc-release-2-1.el8.x86_64.rpm
+dnf -y install ohpc-base
+dnf -y install ohpc-release
+dnf -y install ohpc-slurm-client
+dnf -y install wget curl python3-pip jq git make nfs-utils libnfs
+dnf -y install zip multitail vim
+
+# adding for mpich support
+dnf -y install librdmacm libpsm2
+~~~
+
 **Once your packer builder is done and you have recorded your compute node AMI, you may continue 
 to [Exercise 2](exercise2.html).**
 

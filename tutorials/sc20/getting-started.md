@@ -100,7 +100,7 @@ You will need to set these API keys each time you log in to this instance.
 
 ~~~console
 
-$ sudo dnf -y install python36 wget zip
+$ sudo dnf -y install python36 wget zip 
 $ pip3 install --user awscli
 
 ~~~
