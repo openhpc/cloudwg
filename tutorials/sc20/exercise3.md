@@ -8,7 +8,7 @@ nav_order: 5
 # Exercise 3: OpenHPC Software
 
 As we discussed during the [introduction presentation](https://docs.google.com/presentation/d/1uCorXaj5Cz1qEJiCLzBSpeG0s1iFCqEmtTmDNIsmnEE),
-OpenHPC is a software repository that is a series of building blocks. 
+OpenHPC is "simply" a software repository that is a series of building blocks. 
 When we run OpenHPC in the cloud, we replace the provisioner (warewulf or xCAT) with packer and cloudformation. 
 However, we still have the core of OpenHPC, the hierarchical software environment.
 
@@ -24,6 +24,15 @@ OpenHPC provides a component hierarchy that is reflected in the user environment
 * End user sees compatible software based on the currently loaded environment
 * Modulefiles for components relying on compiler/MPI variants leverage the “family” capability of Lmod
 * If you switch to a different MPI variant, other related modules are updated automatically
+
+~~~console
+$ module list
+
+Currently Loaded Modules:
+  1) autotools   2) prun/2.0   3) gnu9/9.3.0   4) libfabric/1.10.1   5) mpich/3.3.2-ofi   6) ohpc
+
+$ module add boost
+~~~
 
 ![OHPC HSE-user](../images/SC20-HSE-user.png){: width="700px"}
 
@@ -137,6 +146,8 @@ This lmod.sh script:
 * Initializes Lmod
 * Loads the ohpc modulefile
 
+***The ohpc modulefile is responsible for controlling the default environment***
+
 ~~~console
 centos@ip-192-168-0-100 ~]$ cat /opt/ohpc/pub/modulefiles/ohpc 
 #%Module1.0#####################################################################
@@ -173,10 +184,20 @@ if [ module-info mode remove ] {
 
 ### Setting Default Compiler and MPI Stack for Cluster
 
+
 ~~~console
-[centos@ip-192-168-0-100 ~]$ rpm -q --whatprovides /opt/ohpc/pub/modulefiles/ohpc
+$ rpm -q --whatprovides /opt/ohpc/pub/modulefiles/ohpc
 lmod-defaults-gnu9-mpich-ofi-ohpc-2.0-6.1.ohpc.2.0.noarch
+
+$ rpm -ql lmod-defaults-gnu9-mpich-ofi-ohpc
+/opt/ohpc
+/opt/ohpc/pub
+/opt/ohpc/pub/modulefiles
+/opt/ohpc/pub/modulefiles/ohpc
+
 ~~~
+
+***Multiple versions of the ohpc modulefile are available through mutually exclusive lmod-default packages.***
 
 ~~~console
 [centos@ip-192-168-0-100 ~]$ dnf search lmod-defaults ohpc
@@ -217,8 +238,13 @@ lmod-defaults-intel-openmpi4-ohpc.src : OpenHPC default login environments
 ~~~console
 $ sudo dnf -y remove lmod-defaults-gnu9-mpich-ofi-ohpc
 $ sudo dnf -y install lmod-defaults-gnu9-openmpi4-ohpc
-[centos@ip-192-168-0-100 ~]$ bash -l
-[centos@ip-192-168-0-100 ~]$ ml list
+$ logout
+~~~
+
+Now log back in and you'll see that the default module stack has changed.
+
+~~~console
+$ ml list
 
 Currently Loaded Modules:
   1) autotools   2) prun/2.0   3) gnu9/9.3.0   4) ucx/1.8.0   5) libfabric/1.10.1   6) openmpi4/4.0.4   7) ohpc   8) boost/1.73.0
@@ -227,18 +253,21 @@ Currently Loaded Modules:
 Finally, let's return out module stack defaults back to mpich.
 
 ~~~console
-$ sudo dnf -y remove lmod-defaults-gnu9-openmpi4-ohpc && sudo dnf -y install lmod-defaults-gnu9-mpich-ofi-ohpc
+$ sudo dnf -y remove lmod-defaults-gnu9-openmpi4-ohpc && sudo dnf -y install lmod-defaults-gnu9-mpich-ofi-ohpc 
+$ logout
 ~~~
 
 Using the lmod-defaults packages, you can control which compiler / MPI stack combo is the system default.
 If you'd like to further customize the default module environment for all users, simply create site-specific /etc/profile.d SHELL profiles.
+
+
 
 If you'd like to customize modules on a per user basis, that is done using LMOD collections.
 
 ### Customizing Default Modules Loaded (The Default Collection)
 
 Modules can be grouped into collections and used to create a declarative way to restore environments.
-Collections can also be used to define the default environment on login on a per user basis.
+Collections can also be used to define the default environment on a per user basis.
 
 
 ~~~console
@@ -252,8 +281,7 @@ $ ml save
 Saved current collection of modules to: "default"
 
 $ echo "module restore" >> ~/.bashrc 
-$ exit
-logout
+$ logout
 Connection to ec2-x-xxx-xx-xxx.compute-1.amazonaws.com closed.
 $ ssh -i cluster-sc20.pem centos@ec2-x-xxx-xx-xxx.compute-1.amazonaws.com
 load pubkey "cluster-sc20.pem": invalid format
@@ -284,5 +312,41 @@ Currently Loaded Modules:
 ~~~
 
 ### Working with Module Collections
+
+Using the `module save` command, we can set up multiple, named collections.
+Collections allow us to declarively switch between multiple development environment.
+
+~~~console
+$ ml save mpich-stack
+Saved current collection of modules to: "mpich-stack"
+
+$ ml swap mpich openmpi4
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) boost/1.73.0     2) fftw/3.3.8     3) petsc/3.13.1     4) phdf5/1.10.6     5) scalapack/2.1.0
+
+$ ml save openmpi4-stack
+Saved current collection of modules to: "openmpi4-stack"
+
+$ ml restore mpich-stack
+~~~
+
+Now that our collections are set up, let's see how to use them.
+
+~~~console
+$ which mpicc
+/opt/ohpc/pub/mpi/mpich-ofi-gnu9-ohpc/3.3.2/bin/mpicc
+$ echo $PETSC_LIB/
+/opt/ohpc/pub/libs/gnu9/mpich/petsc/3.13.1/lib/
+$ ml restore openmpi4-stack 
+Restoring modules from user's openmpi4-stack
+$ which mpicc
+/opt/ohpc/pub/mpi/openmpi4-gnu9/4.0.4/bin/mpicc
+$ echo $PETSC_LIB/
+/opt/ohpc/pub/libs/gnu9/openmpi4/petsc/3.13.1/lib/
+$ ml restore mpich-stack
+Restoring modules from user's mpich-stack
+
+~~~
 
 
