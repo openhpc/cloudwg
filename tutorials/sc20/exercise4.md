@@ -117,7 +117,7 @@ Now that we have ...
 * transfered it to our cluster
 * and unpacked our charliecloud image
 
-We are ready to run our containers. Also, note if you are attending this tutorial live, the containers are available in $HOME/ContainersHPC.
+We are ready to run our containers. If you are attending this tutorial live, the containers are available in $HOME/ContainersHPC.
 
 
 The first thing we will do is invoke a bash shell in our Charliecloud container.
@@ -220,19 +220,19 @@ $ ch-run -w -b /opt/ohpc/.:/opt/ohpc/ ./a408704d3f3d/ -- bash
 When a Charliecloud image is built, a special file is created in $IMAGE/ch/environment that allows you to inherit the environment 
 specified by the builder (Docker).
 
-```console
+~~~console
 $ echo $PATH
 
-$ ch-run -w ./oneapi_hpc_mod -- bash
+$ ch-run -w ./intel-oneapi -- bash
 
 $ echo $PATH
 
 $ exit
 
-$ ch-run --set-env=./oneapi_hpc_mod/ch/environment -w ./oneapi_hpc_mod -- bash
+$ ch-run --set-env=./intel-oneapi/ch/environment -w ./intel-oneapi -- bash
 $ echo $PATH
 $ exit
-```
+~~~
 
 ### Additional Exercise -- Quantum computing simulator setup
 
@@ -267,7 +267,7 @@ The transport layer can default to TCP instead of using the high performance net
 
 ### Appendix: Building and Converting Dockerfiles in Userspace
 
-If you'd like to build containers from Dockerfiles or on Docker/OCI container registeries and don't have access to a system with Docker
+If you'd like to build containers from Dockerfiles or Docker/OCI container registeries and don't have access to a system with Docker
 or you want to build them directly on an HPC system, you can use Podman (if it's installed on your HPC system).
 
 Podman is a daemonless Docker/OCI container runtime that can run without escalated privledges.
@@ -279,10 +279,10 @@ These Dockerfiles are available in the ~/SC20/Dockerfiles directory on your "bas
 
 ```console
 $ cd ~/SC20/Dockerfiles
-$ sh install.sh
+$ sh install-deps.sh
 ```
 
-Log out and log back in in order to have lmod configured.
+Log out and log back in to setup lmod in your environment.
 
 ```console
 $ ml load charliecloud
