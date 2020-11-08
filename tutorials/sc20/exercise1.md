@@ -135,6 +135,8 @@ to [Exercise 2](exercise2.html).**
 <summary>Building the Controller AMI (optional)</summary>
 <pre>
 <code>
+$ export AWS_MAX_ATTEMPTS=60
+$ export AWS_POLL_DELAY_SECONDS=60
 $ cd ~/SC20/packer-templates/controller
 $ packer build controller.yml
 </code>

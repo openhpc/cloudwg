@@ -71,8 +71,8 @@ complete before submitting jobs.
 
 First, we need to get the hostname of our login node from the EC2 console:
 
-* Console > Services > EC2 > Running Instances 
-* Right click Name=SlurmLogin > Connect > SSH client
+* Console > Services > EC2 > Instances  (running)
+* Right click Name=SlurmManagement > Connect > SSH client
 * Save the hostname to your clipboard (example: ec2-xx-xx-xx-xxx.compute-1.amazonaws.com)
 
 Now using your downloaded SSH private key and our login node host information, we can access our login node.
