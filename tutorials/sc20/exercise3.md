@@ -229,7 +229,59 @@ Finally, let's return out module stack defaults back to mpich.
 ~~~console
 $ sudo dnf -y remove lmod-defaults-gnu9-openmpi4-ohpc && sudo dnf -y install lmod-defaults-gnu9-mpich-ofi-ohpc
 ~~~
-### Customizing Default Modules Loaded
+
+Using the lmod-defaults packages, you can control which compiler / MPI stack combo is the system default.
+If you'd like to further customize the default module environment for all users, simply create site-specific /etc/profile.d SHELL profiles.
+
+If you'd like to customize modules on a per user basis, that is done using LMOD collections.
+
+### Customizing Default Modules Loaded (The Default Collection)
+
+Modules can be grouped into collections and used to create a declarative way to restore environments.
+Collections can also be used to define the default environment on login on a per user basis.
+
+
+~~~console
+[centos@ip-192-168-0-100 ~]$ ml list
+
+Currently Loaded Modules:
+  1) autotools   2) prun/2.0   3) gnu9/9.3.0   4) libfabric/1.10.1   5) mpich/3.3.2-ofi   6) ohpc
+
+$ ml load openblas gsl petsc boost fftw phdf5
+$ ml save
+Saved current collection of modules to: "default"
+
+$ echo "module restore" >> ~/.bashrc 
+$ exit
+logout
+Connection to ec2-x-xxx-xx-xxx.compute-1.amazonaws.com closed.
+$ ssh -i cluster-sc20.pem centos@ec2-x-xxx-xx-xxx.compute-1.amazonaws.com
+load pubkey "cluster-sc20.pem": invalid format
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Sun Nov  8 21:47:23 2020 from 97.99.192.170
+Restoring modules from user's default
+$ ml list
+
+Currently Loaded Modules:
+  1) autotools   3) gnu9/9.3.0         5) mpich/3.3.2-ofi   7) openblas/0.3.7   9) scalapack/2.1.0  11) boost/1.73.0  13) phdf5/1.10.6
+  2) prun/2.0    4) libfabric/1.10.1   6) ohpc              8) gsl/2.6         10) petsc/3.13.1     12) fftw/3.3.8
+~~~
+
+Additional modules can be loaded and added to the default environment at any time.
+
+~~~console
+$ ml load charliecloud valgrind
+$ ml save
+Saved current collection of modules to: "default"
+
+$ ml list
+
+Currently Loaded Modules:
+  1) autotools    4) libfabric/1.10.1   7) openblas/0.3.7   10) petsc/3.13.1  13) phdf5/1.10.6
+  2) prun/2.0     5) mpich/3.3.2-ofi    8) gsl/2.6          11) boost/1.73.0  14) charliecloud/0.15
+  3) gnu9/9.3.0   6) ohpc               9) scalapack/2.1.0  12) fftw/3.3.8    15) valgrind/3.15.0
+~~~
 
 ### Working with Module Collections
 
