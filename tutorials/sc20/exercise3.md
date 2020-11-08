@@ -30,8 +30,205 @@ OpenHPC provides a component hierarchy that is reflected in the user environment
 
 ### Lmod Instantiation
 
+Next, let's look at how Lmod gets setup upon logging into our cluster.
+We will walk through an example instantiation for a BASH shell but the same generalized procedure happens for every shell.
+
+The first thing that is sourced that is relevant is $HOME/.bashrc
+
+~~~bash
+# $HOME/.bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific environment
+PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+~~~
+
+This then sources the global definitions in /etc/bashrc.
+
+~~~bash
+# /etc/bashrc
+
+# System wide functions and aliases
+# Environment stuff goes in /etc/profile
+
+# It's NOT a good idea to change this file unless you know what you
+# are doing. It's much better to create a custom.sh shell script in
+# /etc/profile.d/ to make custom changes to your environment, as this
+# will prevent the need for merging in future updates.
+
+# Prevent doublesourcing
+if [ -z "$BASHRCSOURCED" ]; then
+  BASHRCSOURCED="Y"
+
+  # are we an interactive shell?
+
+# ...
+# <snipped>
+# ...
+
+    SHELL=/bin/bash
+    # Only display echos from profile.d scripts if we are no login shell
+    # and interactive - otherwise just process them to set envvars
+    for i in /etc/profile.d/*.sh; do
+        if [ -r "$i" ]; then
+            if [ "$PS1" ]; then
+                . "$i"
+            else
+                . "$i" >/dev/null
+            fi
+        fi
+    done
+
+# ...
+~~~
+
+Which then sources every ".sh" script in /etc/profile.d including /etc/profile.d/lmod.sh 
+
+~~~bash
+#!/bin/sh
+# -*- shell-script -*-
+########################################################################
+#  This is the system wide source file for setting up
+#  modules:
+#
+########################################################################
+
+# NOOP if running under known resource manager
+if [ ! -z "$SLURM_NODELIST" ];then
+     return
+fi
+
+if [ ! -z "$PBS_NODEFILE" ];then
+    return
+fi
+
+export LMOD_SETTARG_CMD=":"
+export LMOD_FULL_SETTARG_SUPPORT=no
+export LMOD_COLORIZE=no
+export LMOD_PREPEND_BLOCK=normal
+
+if [ $EUID -eq 0 ]; then
+    export MODULEPATH=/opt/ohpc/admin/modulefiles:/opt/ohpc/pub/modulefiles
+else
+    export MODULEPATH=/opt/ohpc/pub/modulefiles
+fi
+
+export BASH_ENV=/opt/ohpc/admin/lmod/lmod/init/bash
+
+# Initialize modules system
+. /opt/ohpc/admin/lmod/lmod/init/bash >/dev/null
+
+# Load baseline OpenHPC environment
+module try-add ohpc
+~~~
+
+This lmod.sh script:
+* Sets MODULEPATH to the location of the OHPC-provided modulefiles
+* Initializes Lmod
+* Loads the ohpc modulefile
+
+~~~console
+centos@ip-192-168-0-100 ~]$ cat /opt/ohpc/pub/modulefiles/ohpc 
+#%Module1.0#####################################################################
+# Default OpenHPC environment
+#############################################################################
+
+proc ModulesHelp { } {
+puts stderr "Setup default login environment"
+}
+
+#
+# Load Desired Modules
+#
+
+prepend-path     PATH   /opt/ohpc/pub/bin
+
+if { [ expr [module-info mode load] || [module-info mode display] ] } {
+        prepend-path MANPATH /usr/local/share/man:/usr/share/man/overrides:/usr/share/man/en:/usr/share/man
+        module try-add autotools
+        module try-add prun
+        module try-add gnu9
+        module try-add mpich
+}
+
+if [ module-info mode remove ] {
+        module del mpich
+        module del gnu9
+        module del prun
+        module del autotools
+}
+
+~~~
+
+
 ### Setting Default Compiler and MPI Stack for Cluster
 
+~~~console
+[centos@ip-192-168-0-100 ~]$ rpm -q --whatprovides /opt/ohpc/pub/modulefiles/ohpc
+lmod-defaults-gnu9-mpich-ofi-ohpc-2.0-6.1.ohpc.2.0.noarch
+~~~
+
+~~~console
+[centos@ip-192-168-0-100 ~]$ dnf search lmod-defaults ohpc
+CentOS-8 - AppStream                                                                                           26 MB/s | 5.8 MB     00:00
+CentOS-8 - Base                                                                                               2.1 MB/s | 2.2 MB     00:01
+CentOS-8 - Extras                                                                                              61 kB/s | 8.1 kB     00:00
+CentOS-8 - PowerTools                                                                                         5.5 MB/s | 1.9 MB     00:00
+OpenHPC-2 - Base                                                                                               21 MB/s | 3.1 MB     00:00
+OpenHPC-2 - Updates                                                                                           5.5 kB/s | 257  B     00:00
+Extra Packages for Enterprise Linux Modular 8 - x86_64                                                        217 kB/s |  97 kB     00:00
+Extra Packages for Enterprise Linux 8 - x86_64                                                                5.7 MB/s | 8.3 MB     00:01
+===================================================== Name Matched: ohpc, lmod-defaults ======================================================
+lmod-defaults-gnu9-impi-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-gnu9-impi-ohpc.src : OpenHPC default login environments
+lmod-defaults-arm1-mpich-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-intel-impi-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-arm1-mpich-ohpc.src : OpenHPC default login environments
+lmod-defaults-intel-impi-ohpc.src : OpenHPC default login environments
+lmod-defaults-intel-mpich-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-intel-mpich-ohpc.src : OpenHPC default login environments
+lmod-defaults-arm1-openmpi4-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-gnu9-mvapich2-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-gnu9-openmpi4-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-arm1-openmpi4-ohpc.src : OpenHPC default login environments
+lmod-defaults-gnu9-mvapich2-ohpc.src : OpenHPC default login environments
+lmod-defaults-gnu9-openmpi4-ohpc.src : OpenHPC default login environments
+lmod-defaults-gnu9-mpich-ofi-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-gnu9-mpich-ucx-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-intel-mvapich2-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-intel-openmpi4-ohpc.noarch : OpenHPC default login environments
+lmod-defaults-gnu9-mpich-ofi-ohpc.src : OpenHPC default login environments
+lmod-defaults-gnu9-mpich-ucx-ohpc.src : OpenHPC default login environments
+lmod-defaults-intel-mvapich2-ohpc.src : OpenHPC default login environments
+lmod-defaults-intel-openmpi4-ohpc.src : OpenHPC default login environments
+[centos@ip-192-168-0-100 ~]$ 
+~~~
+
+~~~console
+$ sudo dnf -y remove lmod-defaults-gnu9-mpich-ofi-ohpc
+$ sudo dnf -y install lmod-defaults-gnu9-openmpi4-ohpc
+[centos@ip-192-168-0-100 ~]$ bash -l
+[centos@ip-192-168-0-100 ~]$ ml list
+
+Currently Loaded Modules:
+  1) autotools   2) prun/2.0   3) gnu9/9.3.0   4) ucx/1.8.0   5) libfabric/1.10.1   6) openmpi4/4.0.4   7) ohpc   8) boost/1.73.0
+~~~
+
+Finally, let's return out module stack defaults back to mpich.
+
+~~~console
+$ sudo dnf -y remove lmod-defaults-gnu9-openmpi4-ohpc && sudo dnf -y install lmod-defaults-gnu9-mpich-ofi-ohpc
+~~~
 ### Customizing Default Modules Loaded
 
 ### Working with Module Collections
