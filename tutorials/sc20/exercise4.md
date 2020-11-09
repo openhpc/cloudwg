@@ -137,6 +137,36 @@ $ ls
 $ exit
 ```
 
+***bash: /opt/ohpc/admin/lmod/lmod/libexec/lmod: No such file or directory?***
+
+
+In Exercise 3, we set up module collections and added `module restore` to our ~/.bashrc.
+However our containers are not set up to use lmod. Future versions of this tutorial will cover integration of OpenHPC modules
+into container environments.
+
+For now, we can edit our ~/.bashrc and set it up to check for the existence of the /WEIRD_AL_YANKOVIC file.
+Charliecloud images always have this file at the top level of their virtual file system.
+
+~~~console
+$ pwd
+/home/centos/ContainersHPC/intel-oneapi
+$ cat WEIRD_AL_YANKOVIC 
+This directory is a Charliecloud image.
+~~~
+
+Edit your ~/.bashrc and replace the `module restore` command with this if statement (or simply remove / comment out the module command).
+
+~~~bash
+# User specific aliases and functions
+
+if [ -f /WEIRD_AL_YANKOVIC ]
+then
+        echo "inside container; not restoring lmod defaults" #NOOP
+else
+        module restore
+fi
+~~~
+
 #### Compile "hello world" mpi C program
 
 Next, we will compile an MPI hello world program that is inside the container using the container compiler and MPI stacks.
