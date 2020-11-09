@@ -3,6 +3,7 @@ title: Exercise 3
 layout: default
 parent: SC 2020 Tutorial
 nav_order: 5
+has_children: true
 ---
 
 # Exercise 3: OpenHPC Software
