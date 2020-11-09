@@ -4,7 +4,6 @@ layout: default
 parent: Exercise 3
 grand_parent: SC 2020 Tutorial
 nav_order: 1
-
 ---
 
 ### Development Environment
