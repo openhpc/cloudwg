@@ -10,5 +10,5 @@ dnf -y install ohpc-slurm-client
 dnf -y install wget curl python3-pip jq git make nfs-utils libnfs
 dnf -y install zip multitail vim
 
-# adding for mpich support?
+# adding for mpich support
 dnf -y install librdmacm libpsm2
