@@ -303,7 +303,7 @@ These directories were built from Dockerfiles that were provided as part of the 
 These Dockerfiles are available in the ~/SC20/Dockerfiles directory on your "bastion"/manually launched EC2 instance.
 
 ```console
-$ cd ~/SC20/Dockerfiles
+$ cd ~/SC20/misc/Dockerfiles/
 $ sh install-deps.sh
 ```
 
@@ -311,7 +311,7 @@ Log out and log back in (or run `bash -l`) to setup lmod in your environment.
 
 ```console
 $ ml load charliecloud
-$ podman build -t myoneapi -f Dockerfile_oneAPI_mod
+$ podman build -t myoneapi -f Dockerfile_intel-oneapi
 $ ch-builder2tar myoneapi .
 ```
 
