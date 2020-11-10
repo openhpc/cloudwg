@@ -24,7 +24,7 @@ These accounts are only meant to be used in the event that you are unable to get
 
 Also as part of SC 2020,
 [EventEngine](https://dashboard.eventengine.run/login) hashes will be available
-upon request on November 12th during the tutorial.
+upon request on November 10th during the tutorial.
 
 In order to request acess, join the [OpenHPC
 Slack](https://join.slack.com/t/openhpc/shared_invite/enQtODAyNTgyMTUyNDUwLWIyMjc5MmJlMjJlY2ExNzYyYzcyN2M3OTkyMTcwOWI4YzlkMmEyMzIzODZhYzIxYzIwZDE2NWEyNmMzNzVhMTY)
