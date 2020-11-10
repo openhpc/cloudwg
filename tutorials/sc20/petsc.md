@@ -22,7 +22,8 @@ parallel library](https://www.mcs.anl.gov/petsc/) package visible in
 your current modules hierarchy:
 
 ~~~~console
-module show petsc
+$ module load petsc
+$ module show petsc
 -------------------------------------------------------------------------------------------
    /opt/ohpc/pub/moduledeps/gnu9-mpich/petsc/3.13.1:
 -------------------------------------------------------------------------------------------
