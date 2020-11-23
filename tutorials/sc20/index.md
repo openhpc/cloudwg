@@ -29,12 +29,7 @@ nav_order: 299
 
 Since its inception as a Linux Foundation project in 2015, OpenHPC
 (https:///openhpc.community) has steadily grown to provide a modern, consistent
-reference collection of HPC software. Although a primary focus of OpenHPC is to
-enable sites deploying new HPC clusters to rapidly get their clusters up and
-running, the OpenHPC software repository itself serves as a reliable, portable,
-integrated collection of software, libraries, tools and user environment that
-can be employed in containers and VMs as well as HPC clusters to develop and
-execute HPC applications.  Although the primary focus of OpenHPC remains
+reference collection of HPC software. Although the primary focus of OpenHPC remains
 enabling the on-premises deployment of new HPC clusters rapidly, the OpenHPC
 software repository itself serves as a reliable, portable, integrated collection
 of software, libraries, tools and user environment that can be employed in
