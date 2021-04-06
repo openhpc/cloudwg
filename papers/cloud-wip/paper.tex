@@ -152,7 +152,7 @@
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{OpenHPC, cloud computing, containerization}
+\keywords{OpenHPC, cloud computing and networking, HPC workloads}
 
 %%
 %% This command processes the author and affiliation and title
@@ -161,11 +161,30 @@
 
 \section{Introduction}
 \lipsum[3]
+
+\subsection{Insallation Overview}
+Walk them thru an overview of how to do the installation. What tools are being
+used...
+
 \lipsum[4]
-\lipsum[5]
 
 \section{Results}
 \lipsum[6]
+\subsection{Cluster assembly}
+\begin{itemize}
+\item maybe highlight some meaurements for the time it takes to build the
+  cluster at AWS from scratch?
+\item highlight time to launch job with dynamic resource manager power on/off
+  (ie, how long to launch a job if no nodes are available)
+\item resulting final image size to stash if wanting to save?
+\end{itemize}
+
+\subsection{MPI microbenchmarks}
+\begin {itemize}
+\item demonstrate reasonable latencies and effective bandwidth with EFA
+\item compare mpich/openmpi
+\item contrast with distro provided mpi if possible?
+\end{itemize}
 \lipsum[7]
 
 \section{Conclusion}
